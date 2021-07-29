@@ -1,0 +1,23 @@
+package vehicle;
+
+import element.ElementColor;
+
+public class Truck extends Vehicle {
+    
+    protected double capacity;
+
+    public Truck(int x, int y, int speed, String brand, String model, int year, double capacity){
+        super(x, y, speed, new ElementColor(255, 0, 128), brand, model, year);
+        setCapacity(capacity);
+    }
+
+    public double getCapacity(){
+        return this.capacity;
+    }
+
+    public void setCapacity(double capacity){
+        if(capacity > 0){
+            this.capacity = capacity;
+        }
+    }
+}
