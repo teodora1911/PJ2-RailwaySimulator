@@ -4,8 +4,8 @@ import util.Constants;
 
 public class BedWagon extends PassengerWagon {
     
-    public BedWagon(int x, int y, int length){
-        super(x, y, length, Constants.WagonLabels.BED.getValue());
+    public BedWagon(int x, int y, int speed, int length){
+        super(x, y, speed, length, Constants.WagonLabels.BED.getValue());
     }
 
     @Override

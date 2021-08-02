@@ -5,17 +5,19 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import map.Coordinates;
+import static util.Constants.MIN_SPEED;
+
+import map.Field;
 import map.Map;
 import util.Constants;
 import vehicle.Car;
 import vehicle.Truck;
 
-public class CreationThread extends Thread {
+public class VehicleCreationThread extends Thread {
 
     private Random rand = new Random();
 
-    public CreationThread(){
+    public VehicleCreationThread(){
         super();
     }
     
@@ -32,11 +34,11 @@ public class CreationThread extends Thread {
                 for(int i = 0; i < Map.numberOfRoads(); ++i){
                     if(numberOfVehicles[i] != 0){
                         boolean direction = (rand.nextInt() % 2 == 0);
-                        Coordinates c = Map.getRoad(i + 1).getStartingCoordinates(direction);
+                        Field field = Map.getRoad(i + 1).getStartingPoint(direction);
                         if(rand.nextInt() % 2 == 0){
-                            new Thread(new Car(c.getX(), c.getY(), rand.nextInt(Map.getRoad(i + 1).getMaxSpeed()), "", "", 1, 4)).start();
+                            new Thread(new Car(field.getX(), field.getY(), rand.nextInt(Map.getRoad(i + 1).getMaxSpeed() - MIN_SPEED) + MIN_SPEED, "brand", "model", 1, 4)).start();
                         } else {
-                            new Thread(new Truck(c.getX(), c.getY(), rand.nextInt(Map.getRoad(i + 1).getMaxSpeed()), "brand", "model", 1, 4)).start();
+                            new Thread(new Truck(field.getX(), field.getY(), rand.nextInt(Map.getRoad(i + 1).getMaxSpeed() - MIN_SPEED) + MIN_SPEED, "brand", "model", 1, 4)).start();
                         }
 
                         --numberOfVehicles[i];
@@ -44,7 +46,7 @@ public class CreationThread extends Thread {
                         try {
                             Thread.sleep(Constants.CREATION_TIME_GAP);
                         } catch (Exception ex) {
-                            Logger.getLogger(CreationThread.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                            Logger.getLogger(VehicleCreationThread.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                         }
                     }
                 }

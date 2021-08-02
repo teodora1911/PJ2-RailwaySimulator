@@ -1,7 +1,6 @@
 package map;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import util.Constants;
 
@@ -45,17 +44,27 @@ public class Coordinates implements Serializable {
 
     @Override
 	public boolean equals(Object object) {
-		if(this == object)
-			return true;
-		if((object == null) || (getClass() != object.getClass()))
-			return false;
+		if(this == object){
+            return true;
+        }
+
+		if((object == null) || (getClass() != object.getClass())){
+            return false;
+        }
+
 		Coordinates other = (Coordinates)object;
 		return ((this.x == other.getX()) && (this.y == other.getY()));
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(x, y);
+		int prime = 31;
+        int result = 1;
+
+        result = prime * result + (int)(x ^ (x >>> 32));
+        result = prime * result + (int)(y ^ (y >>> 32));
+
+        return result;
 	}
 
     public boolean isValid(){

@@ -1,16 +1,18 @@
 package element;
 
+import static util.Constants.MIN_SPEED;
+
 import map.Coordinates;
 
 public abstract class Element {
     protected Coordinates coordinates;
-    protected boolean active;
     protected ElementColor mapColor;
+    protected int speed;
 
-    public Element(int x, int y, ElementColor mapColor){
+    public Element(int x, int y, int speed, ElementColor mapColor){
         this.coordinates = new Coordinates(x, y);
+        setSpeed(speed);
         this.mapColor = mapColor;
-        this.active = true;
     }
 
     public int getX(){
@@ -37,20 +39,24 @@ public abstract class Element {
         this.coordinates = c;
     }
 
-    public boolean isActive(){
-        return this.active;
-    }
-
-    public void setActive(boolean active){
-        this.active = active;
-    }
-
     public ElementColor getMapColor(){
         return this.mapColor;
     }
 
     public void setMapColor(ElementColor mapColor){
         this.mapColor = mapColor;
+    }
+
+    public int getSpeed(){
+        return this.speed;
+    }
+
+    public void setSpeed(int speed){
+        if(speed < MIN_SPEED){
+            this.speed = MIN_SPEED;
+        } else {
+            this.speed = speed;
+        }
     }
 
     @Override

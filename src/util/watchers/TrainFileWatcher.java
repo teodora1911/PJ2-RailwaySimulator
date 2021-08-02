@@ -3,6 +3,8 @@ package util.watchers;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import engine.Simulation;
+
 public class TrainFileWatcher extends FileWatcher {
     
     public TrainFileWatcher(Path directory) throws IOException {
@@ -19,8 +21,6 @@ public class TrainFileWatcher extends FileWatcher {
 
     @Override
     public void creationAction(Path filename) {
-        // pozivamo metodu u FileReader klasi
-        // da parsira fajl i kreira novi voz
-        // i postavi u red cekanja na pocetnoj stanici
+        Simulation.fileReader.createNewTrain(filename.toAbsolutePath());
     }
 }

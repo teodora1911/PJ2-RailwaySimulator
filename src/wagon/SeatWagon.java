@@ -6,8 +6,8 @@ public class SeatWagon extends PassengerWagon {
     
     protected int numberOfSeats = 0;
 
-    public SeatWagon(int x, int y, int length, int numberOfSeats){
-        super(x, y, length, Constants.WagonLabels.SEAT.getValue());
+    public SeatWagon(int x, int y, int speed, int length, int numberOfSeats){
+        super(x, y, speed, length, Constants.WagonLabels.SEAT.getValue());
         setNumberOfSeats(numberOfSeats);
     }
 

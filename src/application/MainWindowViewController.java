@@ -178,71 +178,59 @@ public class MainWindowViewController {
         for(int i = 0; i < MAP_SIZE; ++i){
             for(int j = 0; j < MAP_SIZE; ++j){
                 if(map[i][j] != null){
-                    if(map[i][j].getElement() != null){ // dodati uslov ako je zeljeznicka stanica da se pozadina ne mijenja
-                        ElementColor color = map[i][j].getElement().getMapColor();
-                        gridLabels[i][j].setBackground(
-                            new Background(
-                                new BackgroundFill(
-                                    Color.rgb(color.r, color.g, color.b),
-                                    CornerRadii.EMPTY,
-                                    Insets.EMPTY)
-                            )
-                        );
-                    } else {
-                        FieldType type = map[i][j].getFieldType();
+                    updateMapCell(map[i][j]);
+                }
+            }
+        }
+    }
 
-                        switch (type) {
-                            case RAILWAY:
-                             gridLabels[i][j].setBackground(
-                                 new Background(
-                                     new BackgroundFill(
-                                         Color.rgb(Constants.RAILWAY_COLOR.r, Constants.RAILWAY_COLOR.g, Constants.RAILWAY_COLOR.b),
-                                         CornerRadii.EMPTY,
-                                         Insets.EMPTY)));
-                             //gridLabels[i][j].setStyle("-fx-background-color: rgb(" +
-                             //Constants.RAILWAY_COLOR.r + "," +
-                             //Constants.RAILWAY_COLOR.g + "," +
-                             //Constants.RAILWAY_COLOR.b + ");");
-                             break;
-                    
-                            case CROSSING:
-                             gridLabels[i][j].setBackground(
-                                 new Background(
-                                     new BackgroundFill(
-                                         Color.rgb(Constants.CROSSING_COLOR.r, Constants.CROSSING_COLOR.g, Constants.CROSSING_COLOR.b),
-                                         CornerRadii.EMPTY,
-                                         Insets.EMPTY)));
-                             //gridLabels[i][j].setStyle("-fx-background-color: rgb(" +
-                             //Constants.CROSSING_COLOR.r + "," +
-                             //Constants.CROSSING_COLOR.g + "," +
-                             //Constants.CROSSING_COLOR.b + ");");
-                             break;
-                            case ROAD:
-                             gridLabels[i][j].setBackground(
-                                 new Background(
-                                     new BackgroundFill(
-                                         Color.rgb(Constants.ROAD_COLOR.r, Constants.ROAD_COLOR.g, Constants.ROAD_COLOR.b),
-                                         CornerRadii.EMPTY,
-                                         Insets.EMPTY)));
-                             //gridLabels[i][j].setStyle("-fx-background-color: rgb(" +
-                             //Constants.ROAD_COLOR.r + "," +
-                             //Constants.ROAD_COLOR.g + "," +
-                             //Constants.ROAD_COLOR.b + ");");
-                             break;
-                            case RAILWAY_STATION:
-                             gridLabels[i][j].setBackground(
-                                 new Background(
-                                     new BackgroundFill(
-                                         Color.rgb(Constants.RAILWAY_STATION_COLOR.r, Constants.RAILWAY_STATION_COLOR.g, Constants.RAILWAY_STATION_COLOR.b),
-                                         CornerRadii.EMPTY,
-                                         Insets.EMPTY)));
-                             //gridLabels[i][j].setStyle("-fx-background-color: rgb(" +
-                             //Constants.RAILWAY_STATION_COLOR.r + "," +
-                             //Constants.RAILWAY_STATION_COLOR.g + "," +
-                             //Constants.RAILWAY_STATION_COLOR.b + ");");
-                             break;
-                        }
-                    }
+    private void updateMapCell(Field field){ // field nije nikad null
+        if(field.getStation() != null){
+            gridLabels[field.getX()][field.getY()].setStyle(
+                "-fx-background-color: rgb(" +
+                 Constants.RAILWAY_STATION_COLOR.r + "," +
+                  Constants.RAILWAY_STATION_COLOR.g + "," +
+                   Constants.RAILWAY_STATION_COLOR.b + ");"
+                );
+        } else {
+            if(field.getElement() != null){
+                ElementColor color = field.getElement().getMapColor();
+                gridLabels[field.getX()][field.getY()].setStyle(
+                "-fx-background-color: rgb(" +
+                 color.r + "," +
+                  color.g + "," +
+                   color.b + ");"
+                );
+            } else {
+                FieldType type = field.getFieldType();
+                
+                switch (type) {
+                    case ROAD:
+                        gridLabels[field.getX()][field.getY()].setStyle(
+                            "-fx-background-color: rgb(" +
+                             Constants.ROAD_COLOR.r + "," +
+                              Constants.ROAD_COLOR.g + "," +
+                               Constants.ROAD_COLOR.b + ");"
+                            );
+                        break;
+                
+                    case RAILWAY:
+                        gridLabels[field.getX()][field.getY()].setStyle(
+                            "-fx-background-color: rgb(" +
+                             Constants.RAILWAY_COLOR.r + "," +
+                              Constants.RAILWAY_COLOR.g + "," +
+                               Constants.RAILWAY_COLOR.b + ");"
+                            );
+                        break;
+
+                    case CROSSING:
+                        gridLabels[field.getX()][field.getY()].setStyle(
+                            "-fx-background-color: rgb(" +
+                             Constants.CROSSING_COLOR.r + "," +
+                              Constants.CROSSING_COLOR.g + "," +
+                               Constants.CROSSING_COLOR.b + ");"
+                            );
+                        break;
                 }
             }
         }

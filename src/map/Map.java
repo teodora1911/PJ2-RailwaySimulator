@@ -4,22 +4,44 @@ import static util.Constants.MAP_SIZE;
 
 import java.util.List;
 
-import element.Element;
-import engine.Simulation;
+import railwaystation.RailwayStation;
 
 public class Map {
     
     private static Field[][] map = new Field[MAP_SIZE][MAP_SIZE];
 
-    private static final Road road1 = new Road(1);
-    private static final Road road2 = new Road(2);
-    private static final Road road3 = new Road(3);
+    public static RailwayStation A = new RailwayStation("A");
+    public static RailwayStation B = new RailwayStation("B");
+    public static RailwayStation C = new RailwayStation("C");
+    public static RailwayStation D = new RailwayStation("D");
+    public static RailwayStation E = new RailwayStation("E");
 
-    private static final List<Road> roads = List.of(road1, road2, road3);
+    private static Road road1 = new Road(1);
+    private static Road road2 = new Road(2);
+    private static Road road3 = new Road(3);
+
+    private static Railway railwayAB = new Railway(1, A, B);
+    private static Railway railwayBC = new Railway(2, B, C);
+    private static Railway railwayCD = new Railway(3, C, D);
+    private static Railway railwayCE = new Railway(4, C, E);
+
+    private static List<Road> roads = List.of(road1, road2, road3);
+    private static List<Railway> railways = List.of(railwayAB, railwayBC, railwayCD, railwayCE);
+    private static List<RailwayStation> stations = List.of(A, B, C, D, E);
+
+    public static Object updateLock = new Object();
 
     static {
         initializeFields();
         initializeRoads();
+        initializeRailways();
+        initializeStations();
+
+        A.start();
+        B.start();
+        C.start();
+        D.start();
+        E.start();
     }
 
     private Map(){ }
@@ -29,23 +51,56 @@ public class Map {
     }
 
     public static Road getRoad(int id){
-        switch (id) {
-            case 1:
-                return road1;
-        
-            case 2:
-                return road2;
-
-            case 3:
-                return road3;
-
-            default:
-                return null;
+        for(Road road : roads){
+            if(road.getId() == id){
+                return road;
+            }
         }
+        return null;
+    }
+
+    public static Railway getRailway(int id){
+        for(Railway railway : railways){
+            if(railway.getId() == id){
+                return railway;
+            }
+        }
+        return null;
+    }
+
+    public static RailwayStation getStation(String name){
+        for(RailwayStation station : stations){
+            if(name.equals(station.getName())){
+                return station;
+            }
+        }
+        return null;
+    }
+
+    public static List<Road> getRoads(){
+        return roads;
     }
 
     public static int numberOfRoads() {
         return roads.size();
+    }
+
+    public static boolean isStationOnField(Coordinates c){
+        if(c != null && c.isValid()){
+            return map[c.getX()][c.getY()].getStation() != null;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isElementOnField(Coordinates c){
+        if(c != null && c.isValid()){
+            synchronized(Map.updateLock){
+                return map[c.getX()][c.getY()].getElement() != null;
+            }
+        } else {
+            return false;
+        }
     }
 
     private static void initializeFields(){
@@ -137,7 +192,7 @@ public class Map {
         }
 
         map[27][9] = new Field(27, 9, FieldType.RAILWAY);
-        map[28][9] = new Field(27, 9, FieldType.RAILWAY);
+        map[28][9] = new Field(28, 9, FieldType.RAILWAY);
 
         for(int i = 5; i < 9; ++i){
             map[28][i] = new Field(28, i, FieldType.RAILWAY);
@@ -160,127 +215,161 @@ public class Map {
 
         // railway stations 
         // D
-        map[26][1] = new Field(26, 1, FieldType.RAILWAY_STATION);
-        map[26][2] = new Field(26, 2, FieldType.RAILWAY_STATION);
-        map[27][1] = new Field(27, 1, FieldType.RAILWAY_STATION);
-        map[27][2] = new Field(27, 2, FieldType.RAILWAY_STATION);
+        map[26][1] = new Field(26, 1, D);
+        D.addCoordinates(26, 1);
+        map[26][2] = new Field(26, 2, D);
+        D.addCoordinates(26, 2);
+        map[27][1] = new Field(27, 1, D);
+        D.addCoordinates(27, 1);
+        map[27][2] = new Field(27, 2, D);
+        D.addCoordinates(27, 2);
 
         // E
-        map[26][26] = new Field(26, 26, FieldType.RAILWAY_STATION);
-        map[26][25] = new Field(26, 25, FieldType.RAILWAY_STATION);
-        map[25][25] = new Field(25, 25, FieldType.RAILWAY_STATION);
-        map[25][26] = new Field(25, 26, FieldType.RAILWAY_STATION);
+        map[26][26] = new Field(26, 26, E);
+        E.addCoordinates(26, 26);
+        map[26][25] = new Field(26, 25, E);
+        E.addCoordinates(26, 25);
+        map[25][25] = new Field(25, 25, E);
+        E.addCoordinates(25, 25);
+        map[25][26] = new Field(25, 26, E);
+        E.addCoordinates(25, 26);
 
         // C
-        map[19][12] = new Field(19, 12, FieldType.RAILWAY_STATION);
-        map[19][13] = new Field(19, 13, FieldType.RAILWAY_STATION);
-        map[20][12] = new Field(20, 12, FieldType.RAILWAY_STATION);
-        map[20][13] = new Field(20, 13, FieldType.RAILWAY_STATION);
+        map[19][12] = new Field(19, 12, C);
+        C.addCoordinates(19, 12);
+        map[19][13] = new Field(19, 13, C);
+        C.addCoordinates(19, 13);
+        map[20][12] = new Field(20, 12, C);
+        C.addCoordinates(20, 12);
+        map[20][13] = new Field(20, 13, C);
+        C.addCoordinates(20, 13);
 
         // B
-        map[6][5] = new Field(6, 5, FieldType.RAILWAY_STATION);
-        map[6][6] = new Field(6, 6, FieldType.RAILWAY_STATION);
-        map[7][5] = new Field(7, 5, FieldType.RAILWAY_STATION);
-        map[7][6] = new Field(7, 6, FieldType.RAILWAY_STATION);
+        map[6][5] = new Field(6, 5, B);
+        B.addCoordinates(6, 5);
+        map[6][6] = new Field(6, 6, B);
+        B.addCoordinates(6, 6);
+        map[7][5] = new Field(7, 5, B);
+        B.addCoordinates(7, 5);
+        map[7][6] = new Field(7, 6, B);
+        B.addCoordinates(7, 6);
 
         // A
-        map[1][27] = new Field(1, 27, FieldType.RAILWAY_STATION);
-        map[1][28] = new Field(1, 28, FieldType.RAILWAY_STATION);
-        map[2][27] = new Field(2, 27, FieldType.RAILWAY_STATION);
-        map[2][28] = new Field(2, 28, FieldType.RAILWAY_STATION);
+        map[1][27] = new Field(1, 27, A);
+        A.addCoordinates(1, 27); 
+        map[1][28] = new Field(1, 28, A);
+        A.addCoordinates(1, 28);
+        map[2][27] = new Field(2, 27, A);
+        A.addCoordinates(2, 27);
+        map[2][28] = new Field(2, 28, A);
+        A.addCoordinates(2, 28);
     }
 
     private static void initializeRoads(){ // mozda se moze uraditi na bolji nacin
 
        // 1
        for(int i = MAP_SIZE - 1; i >= 20; --i){
-           road1.addLeftTrackCoordinates(8, i);
+           road1.addLeftTrackField(map[8][i]);
        }
-
        for(int i = 7; i >= 0; --i){
-           road1.addLeftTrackCoordinates(i, 20);
+           road1.addLeftTrackField(map[i][20]);
        }
-
        for(int i = 0; i <= 7; ++i){
-           road1.addRightTrackCoordinates(i, 21);
+           road1.addRightTrackField(map[i][21]);
        }
-
        for(int i = 22; i < MAP_SIZE; ++i){
-           road1.addRightTrackCoordinates(7, i);
+           road1.addRightTrackField(map[7][i]);
        }
 
        //2
        for(int i = 0; i < MAP_SIZE; ++i){
-           road2.addLeftTrackCoordinates(14, MAP_SIZE - 1 - i);
-           road2.addRightTrackCoordinates(13, i);
+           road2.addLeftTrackField(map[14][MAP_SIZE - 1 - i]);
+           road2.addRightTrackField(map[13][i]);
        }
 
        // 3 
        for(int i = MAP_SIZE - 1; i >= 21; --i){
-           road3.addLeftTrackCoordinates(i, 20);
+           road3.addLeftTrackField(map[i][20]);
        }
-
        for(int i = 21; i < MAP_SIZE; ++i){
-           road3.addLeftTrackCoordinates(21, i);
+           road3.addLeftTrackField(map[21][i]);
        }
-
        for(int i = MAP_SIZE - 1; i >= 21; --i){
-           road3.addRightTrackCoordinates(22, i);
+           road3.addRightTrackField(map[22][i]);
        }
-
        for(int i = 23; i < MAP_SIZE; ++i){
-           road3.addRightTrackCoordinates(i, 21);
+           road3.addRightTrackField(map[i][21]);
        }
     }
 
-    private static Segment contains(Coordinates c){
-        return roads.stream().filter(road -> road.contains(c) != null).findAny().get().contains(c);
-    }
+    private static void initializeRailways(){ // inicijalizujemo bez stanica
 
-    public static Coordinates nextCoordinates(Coordinates c){
-        Segment road = contains(c);
-        if(road != null){
-            return road.getNextCoordinates(c, true);
-        } else {
-            return null;
+        // A - B
+        for(int i = 26; i >= 16; --i){
+            railwayAB.addField(map[2][i]);
+        }
+        for(int i = 3; i <= 5; ++i){
+            railwayAB.addField(map[i][16]);
+        }
+        for(int i = 15; i >= 6; --i){
+            railwayAB.addField(map[5][i]);
+        }
+
+        // B - C
+        for(int i = 8; i <= 19; ++i){
+            railwayBC.addField(map[i][6]);
+        }
+        for(int i = 7; i < 12; ++i){
+            railwayBC.addField(map[19][i]);
+        }
+
+        // C - E i  C - D
+        for(int i = 14; i <= 18; ++i){
+            railwayCE.addField(map[20][i]);
+        }
+
+        for(int i = 21; i <= 26; ++i){
+            railwayCE.addField(map[i][18]);
+            railwayCD.addField(map[i][12]);
+        }
+        for(int i = 19; i < 25; ++i){
+            railwayCE.addField(map[26][i]);
+        }
+        for(int i = 11; i >= 9; --i){
+            railwayCD.addField(map[26][i]);
+        }
+
+        railwayCD.addField(map[27][9]);
+        
+        for(int i = 9; i >= 5; --i){
+            railwayCD.addField(map[28][i]);
+        }
+        for(int i = 27; i >= 23; --i){
+            railwayCD.addField(map[i][5]);
+        }
+
+        railwayCD.addField(map[23][4]);
+        railwayCD.addField(map[23][3]);
+        railwayCD.addField(map[22][3]);
+        railwayCD.addField(map[22][2]);
+
+        for(int i = 22; i < 26; ++i){
+            railwayCD.addField(map[i][1]);
         }
     }
 
-    public static boolean isFieldFree(Coordinates c){
-        if(c.isValid()){
-            synchronized(contains(c)){
-                return map[c.getX()][c.getY()].getElement() == null;
-            }
-        }
-        return false;
-    }
+    private static void initializeStations(){
+        A.addRailway(railwayAB);
 
-    public static void putElementInField(Element element, Coordinates c){
-        if(!c.isValid() && element.getCoordinates().isValid()){
-            synchronized(contains(element.getCoordinates())){
-                map[element.getX()][element.getY()].setElement(null);
-                Simulation.mwvc.makeChange();
-                return;
-            }
-        }
+        B.addRailway(railwayAB);
+        B.addRailway(railwayBC);
 
-        if(!c.isValid() && !element.getCoordinates().isValid()){
-            return;
-        }
+        C.addRailway(railwayBC);
+        C.addRailway(railwayCD);
+        C.addRailway(railwayCE);
 
-        synchronized(contains(c)){
-            if(!c.isValid()){
-                map[element.getX()][element.getY()].setElement(null);
-                Simulation.mwvc.makeChange();
-                return;
-            }
+        D.addRailway(railwayCD);
 
-            if(Coordinates.validCoordinates(element.getX(), element.getY())){
-                map[element.getX()][element.getY()].setElement(null);
-            }
-            map[c.getX()][c.getY()].setElement(element);
-            element.setCoordinates(c);
-            Simulation.mwvc.makeChange();
-        }
+        E.addRailway(railwayCE);
     }
 }

@@ -1,25 +1,28 @@
 package map;
 
 import java.util.ArrayList;
+import java.util.Optional;
+
+import element.Element;
 
 public class Segment {
     
-    private ArrayList<Coordinates> segment = new ArrayList<>();
+    private ArrayList<Field> segment = new ArrayList<>();
 
     public Segment(){
         super();
     }
 
-    public void addCoordinates(int x, int y){
-        segment.add(new Coordinates(x, y));
+    public void addField(Field field){
+        segment.add(field);
     }
 
-    public boolean contains(Coordinates c){
-        return segment.contains(c);
+    public boolean contains(Field field){
+        return segment.contains(field);
     }
 
-    public Coordinates getNextCoordinates(Coordinates c, boolean direction) {
-        int index = segment.indexOf(c);
+    public Field getNextField(Field previous, boolean direction) {
+        int index = segment.indexOf(previous);
         if(index == -1){
             return null;
         }
@@ -31,21 +34,35 @@ public class Segment {
         }
         
         if(index >= 0 && index < segment.size()){
-            return new Coordinates(segment.get(index));
+            return segment.get(index);
         } else {
             return null;
         }
     }
 
-    public Coordinates getStartingCoordinates(boolean direction){
+    public Field getStartingPoint(boolean direction){
         if(!segment.isEmpty()){
             if(direction){
-                return new Coordinates(segment.get(0));
+                return segment.get(0);
             } else {
-                return new Coordinates(segment.get(segment.size() - 1));
+                return segment.get(segment.size() - 1);
             }
         } else {
             return null;
+        }
+    }
+
+    public Field getEndPoint(boolean direction){
+        return getStartingPoint(!direction);
+    }
+
+    public Element onTheRoad(){
+        Optional<Field> field = segment.stream().filter(f -> f.getElement() != null).findAny();
+
+        if(field.isEmpty()){
+            return null;
+        } else {
+            return field.get().getElement();
         }
     }
 }

@@ -14,9 +14,9 @@ public class Constants {
 
     public enum LocomotiveLabels {
         PASSENGER("PL"),
-        LOAD("LL"),
+        LOAD("TL"),
         UNIVERSAL("UL"),
-        SHUNTING("SL");
+        SHUNTING("ML");
 
         private String value;
 
@@ -27,16 +27,25 @@ public class Constants {
         public String getValue(){
             return this.value;
         }
+
+        public static LocomotiveLabels fromString(String label){
+            for(LocomotiveLabels l : LocomotiveLabels.values()){
+                if(l.getValue().equals(label)){
+                    return l;
+                }
+            }
+            return null;
+        }
     }
 
     public enum WagonLabels {
-        PASSENGER("PW"),
-        SEAT("SW"),
-        BED("BW"),
-        SLEEP("ZW"),
-        RESTAURANT("RW"),
-        LOAD("LW"),
-        SPECIAL("XW");
+        //PASSENGER("PV"),
+        SEAT("SV"),
+        BED("LV"),
+        SLEEP("ZV"),
+        RESTAURANT("RV"),
+        LOAD("TV"),
+        SPECIAL("XV");
 
         private String value;
 
@@ -46,6 +55,19 @@ public class Constants {
 
         public String getValue(){
             return this.value;
+        }
+
+        public static List<String> getPassegnerWagonLabels(){
+            return List.of(SEAT.getValue(), BED.getValue(), SLEEP.getValue(), RESTAURANT.getValue());
+        }
+
+        public static WagonLabels fromString(String label){
+            for(WagonLabels l : WagonLabels.values()){
+                if(l.getValue().equals(label)){
+                    return l;
+                }
+            }
+            return null;
         }
     }
 

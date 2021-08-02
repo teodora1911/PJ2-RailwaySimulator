@@ -1,35 +1,30 @@
 package map;
 
 import element.Element;
+import railwaystation.RailwayStation;
 
 public class Field {
     private Element element;
-    private FieldType fieldType; // null - if it's empty
+    private FieldType fieldType;
+    private RailwayStation station;
     private boolean underVoltage;
 
-    // da li je potrebno da sadrzi koordinate
-    private int x;
-    private int y;
-    // Coordinate coordinates;
+    private Coordinates coordinates;
 
-    public Field(int x, int y, FieldType fieldType, boolean underVoltage, Element element){
-        this.x = x;
-        this.y = y;
-        this.fieldType = fieldType;
-        this.underVoltage = underVoltage;
-        this.element = element;
+    private Field(int x, int y){
+        this.coordinates = new Coordinates(x, y);
+        this.underVoltage = false;
+        this.element = null;
     }
 
     public Field(int x, int y, FieldType fieldType){
-        this(x, y, fieldType, false, null);
+        this(x, y);
+        this.fieldType = fieldType;
     }
 
-    public Field(int x, int y, FieldType fieldType, boolean underVoltage){
-        this(x, y, fieldType, underVoltage, null);
-    }
-
-    public Field(int x, int y){
-        this(x, y, null, false, null);
+    public Field(int x, int y, RailwayStation station){
+        this(x, y);
+        this.station = station;
     }
 
     public Element getElement(){
@@ -48,6 +43,14 @@ public class Field {
         this.fieldType = fieldType;
     }
 
+    public RailwayStation getStation(){
+        return this.station;
+    }
+
+    public void setStation(RailwayStation station){
+        this.station = station;
+    }
+
     public boolean isUnderVoltage(){
         return this.underVoltage;
     }
@@ -56,19 +59,44 @@ public class Field {
         this.underVoltage = underVoltage;
     }
 
-    public int getX(){
-        return this.x;
+    public Coordinates getCoordinates(){
+        return new Coordinates(this.coordinates);
     }
 
-    public void setX(int x){
-        this.x = x;
+    //public void setCoordinates(Coordinates coordinates){
+    //    this.coordinates = coordinates;
+    //}
+
+    public int getX(){
+        return coordinates.getX();
     }
 
     public int getY(){
-        return this.y;
+        return coordinates.getY();
     }
 
-    public void setY(int y){
-        this.y = y;
+    public boolean isEmpty(){
+        return (this.element == null && this.station == null);
     }
+
+    //@Override
+    //// mozda cak i ne treba da redefinisemo ovu metodu jer imamo jednu istancu svakog polja i treba da ih poredimo po adresi
+    //public boolean equals(Object object){
+    //    if(this == object){
+    //        return true;
+    //    }
+//
+    //    if(object == null || (getClass() != object.getClass())){
+    //        return false;
+    //    }
+//
+    //    Field other = (Field)object;
+    //    return (this.coordinates.equals(other.getCoordinates()));
+    //}
+//
+    //@Override
+    //public int hashCode(){
+    //    int prime = 31;
+    //    return prime + prime * (this.coordinates != null ? this.coordinates.hashCode() : 0);
+    //}
 }

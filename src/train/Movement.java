@@ -2,20 +2,28 @@ package train;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import map.Coordinates;
 
 public class Movement implements Serializable {
     private ArrayList<Coordinates> path = new ArrayList<>();
     private long movementTime;
-    private long stationRetention;
-    // lista zeljeznickih stanica
+    private HashMap<String, Long> stationsRetentionTime = new HashMap<>();
     private int trainId;
 
     public Movement(){
         super();
         movementTime = 0;
-        stationRetention = 0;
+    }
+
+    public int getTrainId(){
+        return this.trainId;
+    }
+
+    public void setTrainId(int trainId){
+        this.trainId = trainId;
     }
 
     public ArrayList<Coordinates> getPath(){
@@ -30,12 +38,19 @@ public class Movement implements Serializable {
         this.movementTime = movementTime;
     }
 
-    public long getStationRetention(){
-        return this.stationRetention;
+    public void updateMovementTime(long movementTime){
+        this.movementTime = movementTime - this.movementTime;
     }
 
-    public void setStationRetention(long stationRetention){
-        this.stationRetention = stationRetention;
+    public void setStationRetentionTime(String stationName, Long retentionTime){
+        // pozivamo ovu metodu kada voz krene da ceka na stanici - 1.
+        stationsRetentionTime.put(stationName, retentionTime);
+    }
+
+    public void updateStationRetentionTime(String stationName, Long retentionTime){
+        // pozivamo ovu metodu kada voz krene sa date stanice - 2.
+        Long duration = retentionTime - stationsRetentionTime.get(stationName);
+        stationsRetentionTime.put(stationName, duration);
     }
 
     public void addNewCoordinates(Coordinates c){
@@ -44,16 +59,15 @@ public class Movement implements Serializable {
         }
     }
 
-    // dodaj stanicu
-    // get stanice
-    // set stanice
-
     public String toString() {
 		String toReturn = "Voz [" + trainId + "]\n";
 		toReturn = "Putanja : " + this.path.toString() + "\n";
 		toReturn += "Vrijeme kretanja : " + this.movementTime + "\n";
-		toReturn += "Ukupno vrijeme zadrzavanja na stanicama : " + this.stationRetention + "\n";
-		//toReturn += "Predjene stanice : " + this.stanice.toString() + "\n";
+		toReturn += "Vremena zadrzavanja na stanicama : \n";
+        for(Map.Entry<String, Long> set : stationsRetentionTime.entrySet()){
+            toReturn += ("\t" + set.getKey() + " - " + set.getValue() + "\n");
+        }
+
 		return toReturn;
 	}
 }

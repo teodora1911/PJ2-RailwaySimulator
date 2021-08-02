@@ -58,29 +58,29 @@ public class Road {
         }
     }
 
-    public Segment contains(Coordinates c){
-        if(leftTrack.contains(c)){
+    public Segment contains(Field field){
+        if(leftTrack.contains(field)){
             return leftTrack;
-        } else if (rightTrack.contains(c)){
+        } else if (rightTrack.contains(field)){
             return rightTrack;
         } else {
             return null;
         }
     }
     
-    public Coordinates getStartingCoordinates(boolean direction){
+    public Field getStartingPoint(boolean direction){
         if(direction){
-            return leftTrack.getStartingCoordinates(true);
+            return leftTrack.getStartingPoint(true);
         } else {
-            return rightTrack.getStartingCoordinates(true);
+            return rightTrack.getStartingPoint(true);
         }
     }
 
-    public void addLeftTrackCoordinates(int x, int y){
-        leftTrack.addCoordinates(x, y);
+    public void addLeftTrackField(Field field){
+        leftTrack.addField(field);
     }
 
-    public void addRightTrackCoordinates(int x, int y){
-        rightTrack.addCoordinates(x, y);
+    public void addRightTrackField(Field field){
+        rightTrack.addField(field);
     }
 }

@@ -7,8 +7,8 @@ public class LoadWagon extends Wagon {
     
     protected double maxCapacity = 0.0;
 
-    public LoadWagon(int x, int y, int length, double maxCapacity){
-        super(x, y, new ElementColor(113, 157, 184), Constants.WagonLabels.LOAD.getValue(), length);
+    public LoadWagon(int x, int y, int speed, int length, double maxCapacity){
+        super(x, y, speed, new ElementColor(113, 157, 184), Constants.WagonLabels.LOAD.getValue(), length);
         setMaxCapacity(maxCapacity);
     }
 
