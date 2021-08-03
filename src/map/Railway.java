@@ -54,12 +54,12 @@ public class Railway {
 
     public synchronized int offerTrain(Train train, boolean direction){ // vraca brzinu prethodnog voza
 
-        System.out.println("In offerTrain() metodi...");
+        //System.out.println("In offerTrain() metodi...");
         if(!isEmpty(!direction)){
             return -1;
         }
 
-        System.out.println("Dodace se voz.");
+        //System.out.println("Dodace se voz.");
         if(!readyForNext){
             return -1;
         } else {

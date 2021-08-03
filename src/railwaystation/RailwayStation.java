@@ -88,7 +88,7 @@ public class RailwayStation extends Thread {
         for(Railway path : paths){
             if(path.contains(train) != 0){
                 path.setReadyForNext();
-                System.out.println(" VOZ JE IZASAO IZ STANICE ");
+                System.out.println(" VOZ" + train.getId() + " JE IZASAO IZ STANICE ");
             }
         }
     }

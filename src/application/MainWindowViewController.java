@@ -201,6 +201,13 @@ public class MainWindowViewController {
                   color.g + "," +
                    color.b + ");"
                 );
+            } else if (field.isUnderVoltage()){
+                gridLabels[field.getX()][field.getY()].setStyle(
+                "-fx-background-color: rgb(" +
+                 245 + "," +
+                  255 + "," +
+                   185 + ");"
+                );
             } else {
                 FieldType type = field.getFieldType();
                 

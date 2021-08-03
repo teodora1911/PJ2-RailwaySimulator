@@ -54,6 +54,9 @@ public abstract class Vehicle extends Element implements Runnable {
     @Override
     public void run(){
         
+        while(active){
+            
+        }
     }
 
     @Override

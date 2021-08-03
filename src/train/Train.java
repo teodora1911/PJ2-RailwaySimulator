@@ -173,7 +173,9 @@ public class Train implements Runnable {
 
             lookaheadPosition = lookForNextPosition(lookaheadPosition);
             if(lookaheadPosition != null){
-                setFieldUnderVoltage(lookaheadPosition);
+                if(hasElectricEngine){
+                    setFieldUnderVoltage(lookaheadPosition);
+                }
             } else {
                 System.out.println("NE MOZE DA NADJE SLJEDECE KOORDINATE.");
             }
@@ -230,6 +232,11 @@ public class Train implements Runnable {
             while(!configuration.stream().allMatch(element -> Map.isStationOnField(element.getCoordinates()))){
                 executeStep();
             }
+            // treba da resetujemo lookbehindPosition jer je usao u stanicu
+            synchronized(Map.updateLock){
+                resetFieldUnderVoltage(lookbehindPosition);
+                Simulation.mwvc.makeChange();
+            }
 
             currentStation = stations.peek();
             stations.poll();
@@ -243,24 +250,4 @@ public class Train implements Runnable {
 
         System.out.println("VOZ JE ZAVRSIO SA RADOM.");
     }
-
-    //@Override
-    //public boolean equals(Object object){
-    //    if(this == object){
-    //        return true;
-    //    }
-//
-    //    if(object == null || getClass() != object.getClass()){
-    //        return false;
-    //    }
-//
-    //    Train other = (Train)object;
-    //    return (this.id == other.getId());
-    //}
-//
-    //@Override
-    //public int hashCode(){
-    //    int prime = 31;
-    //    return prime + (int)(id ^ (id >>> 32));
-    //}
 }
