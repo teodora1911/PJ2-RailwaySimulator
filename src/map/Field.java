@@ -63,9 +63,9 @@ public class Field {
         return new Coordinates(this.coordinates);
     }
 
-    //public void setCoordinates(Coordinates coordinates){
-    //    this.coordinates = coordinates;
-    //}
+    public void setCoordinates(Coordinates coordinates){
+        this.coordinates = coordinates;
+    }
 
     public int getX(){
         return coordinates.getX();
@@ -78,25 +78,4 @@ public class Field {
     public boolean isEmpty(){
         return (this.element == null && this.station == null);
     }
-
-    //@Override
-    //// mozda cak i ne treba da redefinisemo ovu metodu jer imamo jednu istancu svakog polja i treba da ih poredimo po adresi
-    //public boolean equals(Object object){
-    //    if(this == object){
-    //        return true;
-    //    }
-//
-    //    if(object == null || (getClass() != object.getClass())){
-    //        return false;
-    //    }
-//
-    //    Field other = (Field)object;
-    //    return (this.coordinates.equals(other.getCoordinates()));
-    //}
-//
-    //@Override
-    //public int hashCode(){
-    //    int prime = 31;
-    //    return prime + prime * (this.coordinates != null ? this.coordinates.hashCode() : 0);
-    //}
 }

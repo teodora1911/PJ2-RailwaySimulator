@@ -1,13 +1,14 @@
 package vehicle;
 
 import element.ElementColor;
+import map.Segment;
 
 public class Car extends Vehicle {
     
     protected int doorCount = 2;
 
-    public Car(int x, int y, int speed, String brand, String model, int year, int doorCount){
-        super(x, y, speed, new ElementColor(215, 96, 192), brand, model, year);
+    public Car(Segment road, int speed, String brand, String model, int year, int doorCount){
+        super(road, speed, new ElementColor(215, 96, 192), brand, model, year);
         setDoorCount(doorCount);
     }
 

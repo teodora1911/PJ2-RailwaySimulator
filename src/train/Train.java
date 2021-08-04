@@ -58,6 +58,10 @@ public class Train implements Runnable {
         this.id = id;
     }
 
+    public ArrayList<RailwayElement> getConfiguration(){
+        return this.configuration;
+    }
+
     public int getSpeed(){
         synchronized(speedLock){
             return this.currentSpeed;
@@ -151,7 +155,7 @@ public class Train implements Runnable {
                 setFieldUnderVoltage(lookaheadPosition);
             }
             Coordinates nextPosition = lookaheadPosition;
-            System.out.println(nextPosition);
+            //System.out.println(nextPosition);
             for(RailwayElement element : configuration){
                 Coordinates currentPosition = element.getCoordinates();
                 element.setCoordinates(nextPosition);
@@ -197,7 +201,7 @@ public class Train implements Runnable {
 
         currentStation = stations.peek();
         stations.poll();
-        System.out.println("TRENUTNA STANICA : " + currentStation.getName());
+        //System.out.println("TRENUTNA STANICA : " + currentStation.getName());
 
         while(!stations.isEmpty()){ // sve dok ne prodje sve stanice, krece se
 
@@ -214,7 +218,7 @@ public class Train implements Runnable {
             }
             historyOfMovement.updateStationRetentionTime(currentStation.getName(), new Date().getTime());
 
-            System.out.println("Trenutna brzina voza " + id + " : " + currentSpeed);
+            //System.out.println("Trenutna brzina voza " + id + " : " + currentSpeed);
             // poziciju prije voza inicijalizujemo sa startingPosition koju smo dobili od stanice kada je pustala voz
             lookaheadPosition = startingPosition;
             // poziciju voza inicijalizujemo da koordinatama posljednjeg elementa u konfiguraciji - jer je svakako taj element u stanici (i dalje)
@@ -232,10 +236,13 @@ public class Train implements Runnable {
             while(!configuration.stream().allMatch(element -> Map.isStationOnField(element.getCoordinates()))){
                 executeStep();
             }
+
             // treba da resetujemo lookbehindPosition jer je usao u stanicu
-            synchronized(Map.updateLock){
-                resetFieldUnderVoltage(lookbehindPosition);
-                Simulation.mwvc.makeChange();
+            if(hasElectricEngine){
+                synchronized(Map.updateLock){
+                    resetFieldUnderVoltage(lookbehindPosition);
+                    Simulation.mwvc.makeChange();
+                }
             }
 
             currentStation = stations.peek();

@@ -13,6 +13,10 @@ public class Segment {
         super();
     }
 
+    public ArrayList<Field> getSegment() {
+        return this.segment;
+    }
+
     public void addField(Field field){
         segment.add(field);
     }

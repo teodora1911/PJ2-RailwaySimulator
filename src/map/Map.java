@@ -3,8 +3,10 @@ package map;
 import static util.Constants.MAP_SIZE;
 
 import java.util.List;
+import java.util.Optional;
 
 import railwaystation.RailwayStation;
+import train.Train;
 
 public class Map {
     
@@ -265,7 +267,7 @@ public class Map {
         A.addCoordinates(2, 28);
     }
 
-    private static void initializeRoads(){ // mozda se moze uraditi na bolji nacin
+    private static void initializeRoads(){
 
        // 1
        for(int i = MAP_SIZE - 1; i >= 20; --i){
@@ -281,7 +283,7 @@ public class Map {
            road1.addRightTrackField(map[7][i]);
        }
 
-       //2
+       // 2
        for(int i = 0; i < MAP_SIZE; ++i){
            road2.addLeftTrackField(map[14][MAP_SIZE - 1 - i]);
            road2.addRightTrackField(map[13][i]);
@@ -371,5 +373,58 @@ public class Map {
         D.addRailway(railwayCD);
 
         E.addRailway(railwayCE);
+    }
+
+    public static boolean isFieldEmpty(Coordinates coordinates){
+        synchronized(Map.updateLock){
+            return map[coordinates.getX()][coordinates.getY()].getElement() == null;
+        }
+    }
+
+    public static boolean isFieldUnderVoltage(Coordinates coordinates){
+        synchronized(Map.updateLock){
+            return map[coordinates.getX()][coordinates.getY()].isUnderVoltage();
+        }
+    }
+
+    public static boolean freeForCrossing(Field field){ // field nam je polje na kom se nalazi pruzni prelaz
+        // trazimo prvo prugu na kom se nalazi taj pruzni prelaz, odnosno prugu koja presijeca dati put
+        Optional<Railway> r = railways.stream().filter(railway -> railway.getPath().contains(field)).findAny();
+        // ovaj uslov bi uvijek trebao da bude ispunjen akko su koordinate i polja hard-code-ovana dobro
+        if(r.isPresent()){
+            Railway railway = r.get();
+            // trazim indeks tog polja na pruzi
+            int fieldIndex = railway.getPath().getSegment().indexOf(field);
+            // trazimo posljednji voz koji je trenutno aktivan na toj pruzi
+            Train lastAdded = railway.getPresentLastAdded();
+            // ako ima trenutno aktivnih vozova
+            if(lastAdded != null){
+                // gledamo pravac u kom se on krece (poklapa se sa pravcem pruge koji smo unaprijed definisali)
+                boolean direction = (lastAdded.getNextStation() == railway.getEndStation());
+                synchronized(Map.updateLock){
+                    // uzimam koordinate posljednje lokomotive/vagona sto cini taj voz
+                    Coordinates lastCoordinates = lastAdded.getConfiguration().get(lastAdded.getConfiguration().size() - 1).getCoordinates();
+                    // provjeravamo da li je taj element u stanici
+                    if(map[lastCoordinates.getX()][lastCoordinates.getY()].getStation() != null){
+                        return false;
+                    } else {
+                        // ako nije u stanici, onda trazimo te koordinate na pruzi, tj. njihov ideks i na osnovu direction, poredimo : 
+                        Field lastConfigurationElementField = map[lastCoordinates.getX()][lastCoordinates.getY()];
+                        int lastConfigurationElementIndex = railway.getPath().getSegment().indexOf(lastConfigurationElementField);
+                        if(direction){
+                            return (lastConfigurationElementIndex > fieldIndex);
+                        } else {
+                            return (lastConfigurationElementIndex < fieldIndex);
+                        }
+                    }
+                }
+            } else {
+                return true;
+            }
+            
+        } else {
+            System.out.println("NEMA PRUZNOG PRELAZA NA NIJEDNOJ PRUZI????");
+            return false;
+        }
     }
 }

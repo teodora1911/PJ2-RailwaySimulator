@@ -16,12 +16,14 @@ public class Railway {
     private ArrayList<Train> movingBackwardTrains = new ArrayList<>();
 
     private boolean readyForNext;
+    private Train lastAdded;
 
     public Railway(int id, RailwayStation startPoint, RailwayStation endPoint){
         this.id = id;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         this.readyForNext = true;
+        this.lastAdded = null;
     }
 
     public int getId(){
@@ -48,11 +50,22 @@ public class Railway {
         return this.endPoint;
     }
 
+    public synchronized Train getPresentLastAdded(){
+        if(!isEmpty(true) || !isEmpty(false)){
+            return this.lastAdded;
+        } else {
+            return null;
+        }
+    }
+
     public void addField(Field field){
         path.addField(field);
     }
 
-    public synchronized int offerTrain(Train train, boolean direction){ // vraca brzinu prethodnog voza
+    /**
+     * @return speed of previous train (if exists)
+     */
+    public synchronized int offerTrain(Train train, boolean direction){
 
         //System.out.println("In offerTrain() metodi...");
         if(!isEmpty(!direction)){
@@ -65,6 +78,7 @@ public class Railway {
         } else {
             int toReturn = speedOfLastTrain(direction);
             add(train, direction);
+            lastAdded = train;
             readyForNext = false;
             return toReturn;
         }
@@ -102,6 +116,10 @@ public class Railway {
         } else {
             return movingBackwardTrains.isEmpty();
         }
+    }
+
+    public synchronized int getTrainCount(){
+        return movingForwardTrains.size() + movingBackwardTrains.size();
     }
 
     private synchronized void add(Train train, boolean direction){

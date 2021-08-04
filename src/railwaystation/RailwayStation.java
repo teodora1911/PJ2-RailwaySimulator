@@ -21,7 +21,6 @@ public class RailwayStation extends Thread {
 
 
     public void addTrainToWaitingQueue(Train train){
-        System.out.println("VOZ " + train.getId() + " JE DODAT U RED.");
         trainQueue.add(train);
     }
 
@@ -59,7 +58,7 @@ public class RailwayStation extends Thread {
                     }
 
                     if(nextTrain != null){
-                        System.out.println("POKUSAVA SE DODATI VOZ " + nextTrain.getId());
+                        //System.out.println("POKUSAVA SE DODATI VOZ " + nextTrain.getId());
                         boolean direction = (this == path.getStartStation());
                         int speed = path.offerTrain(nextTrain, direction);
 
@@ -67,12 +66,12 @@ public class RailwayStation extends Thread {
                            if(speed != 0){
                                nextTrain.changeSpeed(speed);
                            }
-                           System.out.println("ODABRAN JE VOZ " + nextTrain.getId());
+                           //System.out.println("ODABRAN JE VOZ " + nextTrain.getId());
                            nextTrain.setStartingPosition(path.getStartingCoordinates(direction));
                            Object lock = nextTrain.getMovementLock();
                            
                            synchronized(lock){
-                               System.out.println("... Pustanje voza...");
+                               //System.out.println("... Pustanje voza...");
                                lock.notify();
                            }
 
@@ -88,7 +87,7 @@ public class RailwayStation extends Thread {
         for(Railway path : paths){
             if(path.contains(train) != 0){
                 path.setReadyForNext();
-                System.out.println(" VOZ" + train.getId() + " JE IZASAO IZ STANICE ");
+                //System.out.println(" VOZ" + train.getId() + " JE IZASAO IZ STANICE ");
             }
         }
     }
@@ -100,6 +99,6 @@ public class RailwayStation extends Thread {
                 return;
             }
         }
-        System.out.println(" VOZ NIJE U NA PRUZI NI BIO ????? ");
+        //System.out.println(" VOZ NIJE U NA PRUZI NI BIO ????? ");
     }
 }

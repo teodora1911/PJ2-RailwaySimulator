@@ -76,6 +76,14 @@ public class Road {
         }
     }
 
+    public Segment getPath(boolean direction){
+        if(direction){
+            return this.leftTrack;
+        } else {
+            return this.rightTrack;
+        }
+    }
+
     public void addLeftTrackField(Field field){
         leftTrack.addField(field);
     }
@@ -83,4 +91,5 @@ public class Road {
     public void addRightTrackField(Field field){
         rightTrack.addField(field);
     }
+
 }

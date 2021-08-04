@@ -1,13 +1,14 @@
 package vehicle;
 
 import element.ElementColor;
+import map.Segment;
 
 public class Truck extends Vehicle {
     
     protected double capacity;
 
-    public Truck(int x, int y, int speed, String brand, String model, int year, double capacity){
-        super(x, y, speed, new ElementColor(255, 0, 128), brand, model, year);
+    public Truck(Segment road, int speed, String brand, String model, int year, double capacity){
+        super(road, speed, new ElementColor(255, 0, 128), brand, model, year);
         setCapacity(capacity);
     }
 

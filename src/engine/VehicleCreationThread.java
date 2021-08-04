@@ -7,11 +7,11 @@ import java.util.logging.Logger;
 
 import static util.Constants.MIN_SPEED;
 
-import map.Field;
 import map.Map;
 import util.Constants;
 import vehicle.Car;
 import vehicle.Truck;
+import map.Segment;
 
 public class VehicleCreationThread extends Thread {
 
@@ -34,11 +34,11 @@ public class VehicleCreationThread extends Thread {
                 for(int i = 0; i < Map.numberOfRoads(); ++i){
                     if(numberOfVehicles[i] != 0){
                         boolean direction = (rand.nextInt() % 2 == 0);
-                        Field field = Map.getRoad(i + 1).getStartingPoint(direction);
+                        Segment road = Map.getRoads().get(i).getPath(direction);
                         if(rand.nextInt() % 2 == 0){
-                            new Thread(new Car(field.getX(), field.getY(), rand.nextInt(Map.getRoad(i + 1).getMaxSpeed() - MIN_SPEED) + MIN_SPEED, "brand", "model", 1, 4)).start();
+                            new Thread(new Car(road, rand.nextInt(Map.getRoads().get(i).getMaxSpeed() - MIN_SPEED) + MIN_SPEED, "brand", "model", 1, 4)).start();
                         } else {
-                            new Thread(new Truck(field.getX(), field.getY(), rand.nextInt(Map.getRoad(i + 1).getMaxSpeed() - MIN_SPEED) + MIN_SPEED, "brand", "model", 1, 4)).start();
+                            new Thread(new Truck(road, rand.nextInt(Map.getRoads().get(i).getMaxSpeed() - MIN_SPEED) + MIN_SPEED, "brand", "model", 1, 4)).start();
                         }
 
                         --numberOfVehicles[i];
