@@ -2,7 +2,6 @@ package util.watchers;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import engine.Simulation;
 
@@ -11,7 +10,7 @@ public class ConfigurationFileWatcher extends FileWatcher {
     public static final String configFileDirectory = "D:\\JAVA\\PROJEKTNI ZADATAK\\ProjektniZadatak2021\\ProjektniZadatak\\config\\";
     
     public ConfigurationFileWatcher() throws IOException {
-        super(Paths.get(configFileDirectory));
+        super(configFileDirectory);
     }
 
     @Override

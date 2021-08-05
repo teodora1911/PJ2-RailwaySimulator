@@ -16,6 +16,7 @@ public class Movement implements Serializable {
     public Movement(){
         super();
         movementTime = 0;
+        trainId = 0;
     }
 
     public int getTrainId(){
@@ -60,12 +61,21 @@ public class Movement implements Serializable {
     }
 
     public String toString() {
-		String toReturn = "Voz [" + trainId + "]\n";
-		toReturn = "Putanja : " + this.path.toString() + "\n";
-		toReturn += "Vrijeme kretanja : " + this.movementTime + "\n";
+        String toReturn = "";
+		toReturn += "Voz [" + this.trainId + "]\n";
+		toReturn += "Putanja : \n";
+        int i = 0;
+        for(Coordinates t : this.path){
+            toReturn += t.toString() + " ";
+            ++i;
+            if(i % 5 == 0){
+                toReturn += "\n";
+            }
+        }
+		toReturn += "\nVrijeme kretanja : " + (this.movementTime / 1_000) + "\n";
 		toReturn += "Vremena zadrzavanja na stanicama : \n";
         for(Map.Entry<String, Long> set : stationsRetentionTime.entrySet()){
-            toReturn += ("\t" + set.getKey() + " - " + set.getValue() + "\n");
+            toReturn += ("\t" + set.getKey() + " - " + (set.getValue() / 1_000) + "\n");
         }
 
 		return toReturn;

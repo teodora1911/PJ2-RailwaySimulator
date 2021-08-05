@@ -76,8 +76,8 @@ public class Constants {
     public static final int MIN_SIZE_LABEL = 10;
     public static final int PREF_SIZE_LABEL = 30;
 
-    public static final ElementColor ROAD_COLOR = new ElementColor(128, 193, 225);
-    public static final ElementColor RAILWAY_COLOR = new ElementColor(186, 211, 204);
+    public static final ElementColor ROAD_COLOR = new ElementColor(154, 222, 250);
+    public static final ElementColor RAILWAY_COLOR = new ElementColor(196, 214, 222);
     public static final ElementColor CROSSING_COLOR = new ElementColor(0, 0, 0);
     public static final ElementColor RAILWAY_STATION_COLOR = new ElementColor(255, 0, 0);
 

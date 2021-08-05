@@ -8,8 +8,8 @@ public abstract class Locomotive extends RailwayElement {
     protected Engine engine;
     protected double power;
 
-    public Locomotive(int x, int y, int speed, ElementColor mapColor, String label, double power, Engine engine){
-        super(x, y, speed, mapColor, label);
+    public Locomotive(int x, int y, ElementColor mapColor, String label, double power, Engine engine){
+        super(x, y, mapColor, label);
         this.power = power;
         this.engine = engine;
     }

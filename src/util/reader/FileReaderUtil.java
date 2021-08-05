@@ -71,6 +71,7 @@ public class FileReaderUtil {
 
     // KONFIGURACIONI FAJL - CITANJE INFORMACIJA O PUTEVIMA
     public void readRoadInfo(){
+        System.out.println("Reading road info ....");
         try(Stream<String> stream = Files.lines(Paths.get(configurationFilePath))){
 
             List<String> roadInfoLines = stream.limit(3).collect(Collectors.toList());
@@ -249,7 +250,7 @@ public class FileReaderUtil {
     }
 
     // VOZOVI - KREIRANJE KONFIGURACIJE VOZA - lokomotiva i vagona
-    private ArrayList<RailwayElement> getConfiguration(String[] configurationString, int x, int y, int speed){
+    private ArrayList<RailwayElement> getConfiguration(String[] configurationString, int x, int y){
         Random rand = new Random();
         ArrayList<RailwayElement> configuration = new ArrayList<>();
 
@@ -260,46 +261,46 @@ public class FileReaderUtil {
                 Constants.LocomotiveLabels type = Constants.LocomotiveLabels.fromString(element);
                 switch (type) {
                     case PASSENGER:
-                        configuration.add(new PassengerLocomotive(x, y, speed, rand.nextDouble(), engine));
+                        configuration.add(new PassengerLocomotive(x, y, rand.nextDouble(), engine));
                         break;
                 
                     case LOAD:
-                        configuration.add(new LoadLocomotive(x, y, speed, rand.nextDouble(), engine));
+                        configuration.add(new LoadLocomotive(x, y, rand.nextDouble(), engine));
                         break;
 
                     case SHUNTING:
-                        configuration.add(new ShuntingLocomotive(x, y, speed, rand.nextDouble(), engine));
+                        configuration.add(new ShuntingLocomotive(x, y, rand.nextDouble(), engine));
                         break;
 
                     case UNIVERSAL:
-                        configuration.add(new UniversalLocomotive(x, y, speed, rand.nextDouble(), engine));
+                        configuration.add(new UniversalLocomotive(x, y, rand.nextDouble(), engine));
                         break;
                 }
             } else { // inace je vagon
                 Constants.WagonLabels type = Constants.WagonLabels.fromString(element);
                 switch (type) {
                     case SEAT:
-                        configuration.add(new SeatWagon(x, y, speed, rand.nextInt(50) + 25, rand.nextInt(100)));
+                        configuration.add(new SeatWagon(x, y, rand.nextInt(50) + 25, rand.nextInt(100)));
                         break;
                 
                     case BED:
-                        configuration.add(new BedWagon(x, y, speed, rand.nextInt(50) + 25));
+                        configuration.add(new BedWagon(x, y, rand.nextInt(50) + 25));
                         break;
 
                     case SLEEP:
-                        configuration.add(new SleepWagon(x, y, speed, rand.nextInt(50) + 25));
+                        configuration.add(new SleepWagon(x, y, rand.nextInt(50) + 25));
                         break;
 
                     case RESTAURANT:
-                        configuration.add(new RestaurantWagon(x, y, speed, rand.nextInt(50) + 25, "Restaurant" + rand.nextInt()));
+                        configuration.add(new RestaurantWagon(x, y, rand.nextInt(50) + 25, "Restaurant" + rand.nextInt()));
                         break;
 
                     case LOAD:
-                        configuration.add(new LoadWagon(x, y, speed, rand.nextInt(50) + 25, rand.nextDouble()));
+                        configuration.add(new LoadWagon(x, y, rand.nextInt(50) + 25, rand.nextDouble()));
                         break;
 
                     case SPECIAL:
-                        configuration.add(new SpecialWagon(x, y, speed, rand.nextInt(50) + 25));
+                        configuration.add(new SpecialWagon(x, y, rand.nextInt(50) + 25));
                         break;
                 }
             }
@@ -355,7 +356,7 @@ public class FileReaderUtil {
             }
 
             Coordinates coordinates = stations.peek().getCoordinates().stream().findAny().get(); // biramo bilo koju koorinatu na kojoj se nalazi prva stanica voza
-            ArrayList<RailwayElement> configuration = getConfiguration(lines.get(2).split("-"), coordinates.getX(), coordinates.getY(), speed);
+            ArrayList<RailwayElement> configuration = getConfiguration(lines.get(2).split("-"), coordinates.getX(), coordinates.getY());
 
             Train newTrain = new Train(id, speed, configuration, stations);
             new Thread(newTrain).start();
@@ -379,17 +380,17 @@ public class FileReaderUtil {
     }
 
     // CITANJE SERJIALIZOVANIH KRETANJA
-    public ArrayList<Movement> readMovementsDirectory(){
+    public HashMap<String, String> readMovementsDirectory(){
         lock.readLock().lock();
         File directory = new File(movementDirectoryPath);
         String[] serializedFiles = directory.list((dir, name) -> name.toLowerCase().endsWith(SerializationUtilClass.EXTENSION));
-        ArrayList<Movement> movements = null;
+        HashMap<String, String> movements = null;
         if(serializedFiles.length > 0){
-            movements = new ArrayList<>();
+            movements = new HashMap<>();
             for(String file : serializedFiles){
                 Movement m = SerializationUtilClass.deserializeMovement(file);
                 if(m != null){
-                    movements.add(m);
+                    movements.put(file, m.toString());
                 }
             }
         }

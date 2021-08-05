@@ -5,6 +5,7 @@ import java.io.IOException;
 import application.MainWindowViewController;
 import util.reader.FileReaderUtil;
 import util.watchers.ConfigurationFileWatcher;
+import util.watchers.TrainFileWatcher;
 
 public class Simulation {
     
@@ -22,7 +23,7 @@ public class Simulation {
     public void start(){
         try{
             new Thread(new ConfigurationFileWatcher()).start();
-            //new Thread(new TrainFileWatcher()).start();
+            new Thread(new TrainFileWatcher(fileReader.getTrainDirectoryPath())).start();
         } catch (IOException ex){
             System.out.println("File Watcher failed!");
         }

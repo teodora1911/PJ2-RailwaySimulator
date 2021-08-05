@@ -1,5 +1,7 @@
 package vehicle;
 
+import static util.Constants.MIN_SPEED;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,13 +18,15 @@ public abstract class Vehicle extends Element implements Runnable {
     protected String brand;
     protected String model;
     protected int year;
+    protected int speed;
     protected Segment road;
 
     // za sva vozila pravac je true, jer sadrze odgovarajuce segmente
     private static final boolean DIRECTION = true;
 
-    public Vehicle(Segment road, int speed, ElementColor mapColor, String brand, String model, int year){
-        super(road.getStartingPoint(DIRECTION).getX(), road.getStartingPoint(DIRECTION).getY(), speed, mapColor);
+    public Vehicle(Segment road, int speed, ElementColor mapColor, String brand, String model, int year, String label){
+        super(road.getStartingPoint(DIRECTION).getX(), road.getStartingPoint(DIRECTION).getY(), mapColor, label);
+        setSpeed(speed);
         this.road = road;
         this.brand = brand;
         this.model = model;
@@ -59,6 +63,18 @@ public abstract class Vehicle extends Element implements Runnable {
 
     public void setRoad(Segment road){
         this.road = road;
+    }
+
+    public int getSpeed(){
+        return this.speed;
+    }
+
+    public void setSpeed(int speed){
+        if(speed < MIN_SPEED){
+            this.speed = MIN_SPEED;
+        } else {
+            this.speed = speed;
+        }
     }
 
     @Override

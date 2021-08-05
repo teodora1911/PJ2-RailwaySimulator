@@ -140,8 +140,6 @@ public class Train implements Runnable {
         }
     }
 
-    // ne treba da sinhronizuju (mozda) Map.updateLock jer u trenutku kada se pozivaju, voz vec sinhronizuje
-
     private void resetFieldUnderVoltage(Coordinates coordinates){
         if(!Map.isStationOnField(coordinates)){
             Map.getMap()[coordinates.getX()][coordinates.getY()].setUnderVoltage(false);
@@ -201,7 +199,6 @@ public class Train implements Runnable {
 
         currentStation = stations.peek();
         stations.poll();
-        //System.out.println("TRENUTNA STANICA : " + currentStation.getName());
 
         while(!stations.isEmpty()){ // sve dok ne prodje sve stanice, krece se
 
@@ -218,7 +215,6 @@ public class Train implements Runnable {
             }
             historyOfMovement.updateStationRetentionTime(currentStation.getName(), new Date().getTime());
 
-            //System.out.println("Trenutna brzina voza " + id + " : " + currentSpeed);
             // poziciju prije voza inicijalizujemo sa startingPosition koju smo dobili od stanice kada je pustala voz
             lookaheadPosition = startingPosition;
             // poziciju voza inicijalizujemo da koordinatama posljednjeg elementa u konfiguraciji - jer je svakako taj element u stanici (i dalje)

@@ -8,7 +8,7 @@ public class Truck extends Vehicle {
     protected double capacity;
 
     public Truck(Segment road, int speed, String brand, String model, int year, double capacity){
-        super(road, speed, new ElementColor(255, 0, 128), brand, model, year);
+        super(road, speed, new ElementColor(0, 231, 163), brand, model, year, "K");
         setCapacity(capacity);
     }
 

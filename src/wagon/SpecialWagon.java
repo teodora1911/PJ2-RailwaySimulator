@@ -5,8 +5,8 @@ import util.Constants;
 
 public class SpecialWagon extends Wagon {
     
-    public SpecialWagon(int x, int y, int speed, int length){
-        super(x, y, speed, new ElementColor(252, 207, 113), Constants.WagonLabels.SPECIAL.getValue(), length);
+    public SpecialWagon(int x, int y, int length){
+        super(x, y, new ElementColor(163, 163, 11), Constants.WagonLabels.SPECIAL.getValue(), length);
     }
 
     @Override

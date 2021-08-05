@@ -7,7 +7,7 @@ import engine.Simulation;
 
 public class TrainFileWatcher extends FileWatcher {
     
-    public TrainFileWatcher(Path directory) throws IOException {
+    public TrainFileWatcher(String directory) throws IOException {
         super(directory);
     }
 
@@ -21,6 +21,6 @@ public class TrainFileWatcher extends FileWatcher {
 
     @Override
     public void creationAction(Path filename) {
-        Simulation.fileReader.createNewTrain(filename.toAbsolutePath());
+        Simulation.fileReader.createNewTrain(filename);
     }
 }

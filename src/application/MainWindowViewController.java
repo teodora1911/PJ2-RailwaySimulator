@@ -12,11 +12,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
+//import javafx.scene.layout.Background;
+//import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.CornerRadii;
+//import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
@@ -25,7 +25,7 @@ import javafx.stage.WindowEvent;
 import map.Field;
 import map.FieldType;
 import map.Map;
-import javafx.scene.paint.Color;
+//import javafx.scene.paint.Color;
 import util.Constants;
 
 import static util.Constants.MAP_SIZE;
@@ -87,7 +87,8 @@ public class MainWindowViewController {
         movementButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event){
-                HistoryOfMovementViewController.showHistory();
+                HistoryOfMovementViewController history = new HistoryOfMovementViewController();
+                history.showHistory();
             }
         });
 
@@ -134,8 +135,7 @@ public class MainWindowViewController {
                gridLabels[i][j] = new Label("");
                gridLabels[i][j].setPrefSize(Constants.PREF_SIZE_LABEL, Constants.PREF_SIZE_LABEL);
                gridLabels[i][j].setMinSize(Constants.MIN_SIZE_LABEL, Constants.MIN_SIZE_LABEL);
-               gridLabels[i][j].setBackground(new Background(new BackgroundFill(Color.rgb(255, 255, 255), CornerRadii.EMPTY, Insets.EMPTY)));
-               //gridLabels[i][j].setStyle("-fx-background-color: rgb(255,255,255)");
+               gridLabels[i][j].setStyle("-fx-background-color: white; -fx-text-fill: black;");
                gridMap.add(gridLabels[i][j], i, j);
            }
         }
@@ -192,6 +192,7 @@ public class MainWindowViewController {
                   Constants.RAILWAY_STATION_COLOR.g + "," +
                    Constants.RAILWAY_STATION_COLOR.b + ");"
                 );
+            gridLabels[field.getX()][field.getY()].setText("");
         } else {
             if(field.getElement() != null){
                 ElementColor color = field.getElement().getMapColor();
@@ -199,15 +200,17 @@ public class MainWindowViewController {
                 "-fx-background-color: rgb(" +
                  color.r + "," +
                   color.g + "," +
-                   color.b + ");"
+                   color.b + "); "
                 );
+                gridLabels[field.getX()][field.getY()].setText(field.getElement().getLabel());
             } else if (field.isUnderVoltage()){
                 gridLabels[field.getX()][field.getY()].setStyle(
                 "-fx-background-color: rgb(" +
-                 245 + "," +
+                 240 + "," +
                   255 + "," +
-                   185 + ");"
+                   0 + ");"
                 );
+                gridLabels[field.getX()][field.getY()].setText("");
             } else {
                 FieldType type = field.getFieldType();
                 
@@ -219,6 +222,7 @@ public class MainWindowViewController {
                               Constants.ROAD_COLOR.g + "," +
                                Constants.ROAD_COLOR.b + ");"
                             );
+                        gridLabels[field.getX()][field.getY()].setText("");
                         break;
                 
                     case RAILWAY:
@@ -228,6 +232,7 @@ public class MainWindowViewController {
                               Constants.RAILWAY_COLOR.g + "," +
                                Constants.RAILWAY_COLOR.b + ");"
                             );
+                        gridLabels[field.getX()][field.getY()].setText("");
                         break;
 
                     case CROSSING:
@@ -237,6 +242,7 @@ public class MainWindowViewController {
                               Constants.CROSSING_COLOR.g + "," +
                                Constants.CROSSING_COLOR.b + ");"
                             );
+                        gridLabels[field.getX()][field.getY()].setText("");
                         break;
                 }
             }

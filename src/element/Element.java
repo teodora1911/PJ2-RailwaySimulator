@@ -1,17 +1,15 @@
 package element;
 
-import static util.Constants.MIN_SPEED;
-
 import map.Coordinates;
 
 public abstract class Element {
     protected Coordinates coordinates;
     protected ElementColor mapColor;
-    protected int speed;
+    protected String label;
 
-    public Element(int x, int y, int speed, ElementColor mapColor){
+    public Element(int x, int y, ElementColor mapColor, String label){
         this.coordinates = new Coordinates(x, y);
-        setSpeed(speed);
+        this.label = label;
         this.mapColor = mapColor;
     }
 
@@ -47,16 +45,12 @@ public abstract class Element {
         this.mapColor = mapColor;
     }
 
-    public int getSpeed(){
-        return this.speed;
+    public String getLabel(){
+        return this.label;
     }
 
-    public void setSpeed(int speed){
-        if(speed < MIN_SPEED){
-            this.speed = MIN_SPEED;
-        } else {
-            this.speed = speed;
-        }
+    public void setLabel(String label){
+        this.label = label;
     }
 
     @Override

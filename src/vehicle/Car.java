@@ -8,7 +8,7 @@ public class Car extends Vehicle {
     protected int doorCount = 2;
 
     public Car(Segment road, int speed, String brand, String model, int year, int doorCount){
-        super(road, speed, new ElementColor(215, 96, 192), brand, model, year);
+        super(road, speed, new ElementColor(117, 0, 231), brand, model, year, "A");
         setDoorCount(doorCount);
     }
 

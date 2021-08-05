@@ -47,6 +47,8 @@ public class Road {
                 additionalNumberOfVehicles += numberOfVehicles - currentNumberOfVehicles;
                 currentNumberOfVehicles = numberOfVehicles;
             }
+        } else {
+            System.out.println("Ignoring less number of vehicles ...");
         }
     }
 

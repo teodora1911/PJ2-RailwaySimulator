@@ -7,8 +7,8 @@ public abstract class Wagon extends RailwayElement {
     
     private int length;
 
-    public Wagon(int x, int y, int speed, ElementColor mapColor, String label, int length){
-        super(x, y, speed, mapColor, label);
+    public Wagon(int x, int y, ElementColor mapColor, String label, int length){
+        super(x, y, mapColor, label);
     }
 
     public int getLength(){

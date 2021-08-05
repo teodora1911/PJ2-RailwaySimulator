@@ -5,8 +5,8 @@ import util.Constants;
 
 public class ShuntingLocomotive extends Locomotive {
     
-    public ShuntingLocomotive(int x, int y, int speed, double power, Engine engine){
-        super(x, y, speed, new ElementColor(165, 116, 30), Constants.LocomotiveLabels.SHUNTING.getValue(), power, engine);
+    public ShuntingLocomotive(int x, int y, double power, Engine engine){
+        super(x, y, new ElementColor(170, 170, 119), Constants.LocomotiveLabels.SHUNTING.getValue(), power, engine);
     }
 
     @Override

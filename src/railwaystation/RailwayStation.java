@@ -63,7 +63,7 @@ public class RailwayStation extends Thread {
                         int speed = path.offerTrain(nextTrain, direction);
 
                         if(speed >= 0){ // ako se moze da krece
-                           if(speed != 0){
+                           if((speed != 0) && (speed > nextTrain.getSpeed())){
                                nextTrain.changeSpeed(speed);
                            }
                            //System.out.println("ODABRAN JE VOZ " + nextTrain.getId());

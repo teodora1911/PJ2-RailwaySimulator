@@ -6,6 +6,7 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
@@ -18,8 +19,8 @@ public abstract class FileWatcher implements Runnable {
     private WatchService watcher;
     public static final String EXTENSION = ".txt";
 
-    public FileWatcher(Path directory) throws IOException {
-        this.directory = directory;
+    public FileWatcher(String directory) throws IOException {
+        this.directory = Paths.get(directory);
         this.watcher = FileSystems.getDefault().newWatchService();
         this.directory.register(watcher, ENTRY_CREATE, ENTRY_MODIFY);
     }
@@ -48,9 +49,9 @@ public abstract class FileWatcher implements Runnable {
 
                 if(filename.toString().trim().endsWith(EXTENSION)){
                     if(kind.equals(ENTRY_MODIFY)){
-                        modifyAction(filename);
+                        modifyAction(filename.toAbsolutePath());
                     } else {
-                        creationAction(filename);
+                        creationAction(filename.toAbsolutePath());
                     }
                 }
             }

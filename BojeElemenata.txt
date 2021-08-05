@@ -1,0 +1,17 @@
+LOKOMOTIVE : 
+
+ ~ Manevarska - (170, 170, 119)
+ ~ Univerzalna - (254, 227, 226)
+ ~ Teretna - (204, 201, 242)
+ ~ Putnicka - (177, 95, 95)
+
+VAGONI : 
+
+ ~ Putnicki - (136, 69, 69)
+ ~ Teretni - (156, 152, 210)
+ ~ Za posebne namjene - (163, 163, 11)
+
+VOZILA : 
+
+ ~ Automobili - (117, 0, 231)
+ ~ Kamioni - (0, 231, 163)
