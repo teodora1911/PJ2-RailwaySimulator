@@ -61,12 +61,14 @@ public class Segment {
     }
 
     public Element onTheRoad(){
-        Optional<Field> field = segment.stream().filter(f -> f.getElement() != null).findAny();
+        synchronized(Map.updateLock){
+            Optional<Field> field = segment.stream().filter(f -> f.getElement() != null).findAny();
 
-        if(field.isEmpty()){
-            return null;
-        } else {
-            return field.get().getElement();
+            if(field.isEmpty()){
+                return null;
+            } else {
+                return field.get().getElement();
+            }
         }
     }
 }

@@ -21,6 +21,7 @@ public class TrainFileWatcher extends FileWatcher {
 
     @Override
     public void creationAction(Path filename) {
-        Simulation.fileReader.createNewTrain(filename);
+        this.sleep();
+        Simulation.trainCreation.createNewTrain(this.directory.resolve(filename));
     }
 }

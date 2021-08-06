@@ -15,6 +15,7 @@ public class ConfigurationFileWatcher extends FileWatcher {
 
     @Override
     public void modifyAction(Path filename) {
+        this.sleep();
         Simulation.fileReader.readRoadInfo();
     }
 

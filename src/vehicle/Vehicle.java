@@ -83,7 +83,6 @@ public abstract class Vehicle extends Element implements Runnable {
         Field nextField = road.getStartingPoint(DIRECTION);
         while(nextField != null){
             if(nextField.getFieldType() == FieldType.CROSSING){
-                System.out.println("CROSSING");
                 while(!Map.isFieldEmpty(nextField.getCoordinates()) || Map.isFieldUnderVoltage(nextField.getCoordinates()) || !Map.freeForCrossing(nextField)){
                     // busy waiting
                 }
@@ -93,7 +92,6 @@ public abstract class Vehicle extends Element implements Runnable {
                 }
             }
 
-            // kada je prosao sve provjere, moze da krene
             synchronized(Map.updateLock){
                 this.coordinates = nextField.getCoordinates();
                 Map.getMap()[coordinates.getX()][coordinates.getY()].setElement(this);
@@ -117,8 +115,6 @@ public abstract class Vehicle extends Element implements Runnable {
         synchronized(Map.updateLock){
             Map.getMap()[getX()][getY()].setElement(null);
         }
-
-        System.out.println("Vozilo je zavrsilo svoju trku.");
     }
 
     @Override

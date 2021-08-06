@@ -11,6 +11,7 @@ public class Simulation {
     
     public static MainWindowViewController mwvc;
     public static FileReaderUtil fileReader;
+    public static TrainCreationClass trainCreation;
 
     public static void setMainWindowViewController(MainWindowViewController mwvc){
         Simulation.mwvc = mwvc;
@@ -18,6 +19,7 @@ public class Simulation {
 
     public Simulation(){
         fileReader = new FileReaderUtil();
+        trainCreation = new TrainCreationClass(fileReader.getTrainDirectoryPath());
     }
 
     public void start(){
@@ -31,17 +33,4 @@ public class Simulation {
         thread.setDaemon(true);
         thread.start();
     }
-
-   // public static void main(String[] args) {
-   //     String[] config1 = {"UL", "UL", "SV", "PL", "ZV", "PL", "RV", "RV", "UL"}; // true
-   //     String[] config2 = {"ML", "XV", "XV", "ML", "UL", "XV"}; // true
-   //     String[] config3 = {"XV", "XV", "XV"}; // false
-   //     String[] config4 = {"UL", "ZV", "LV", "PL", "TV", "UL", "PL", "RV"}; // false
-   //     String[] config5 = {"TL", "UL", "TV", "TV", "TL", "UL"}; // true
-   //     System.out.println(FileReaderUtil.validTrainConfiguration(config1));
-   //     System.out.println(FileReaderUtil.validTrainConfiguration(config2));
-   //     System.out.println(FileReaderUtil.validTrainConfiguration(config3));
-   //     System.out.println(FileReaderUtil.validTrainConfiguration(config4));
-   //     System.out.println(FileReaderUtil.validTrainConfiguration(config5));
-   // }
 }

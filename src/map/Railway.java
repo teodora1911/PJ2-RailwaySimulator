@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import railwaystation.RailwayStation;
 import train.Train;
+import vehicle.Vehicle;
 
 public class Railway {
     
@@ -67,12 +68,10 @@ public class Railway {
      */
     public synchronized int offerTrain(Train train, boolean direction){
 
-        //System.out.println("In offerTrain() metodi...");
-        if(!isEmpty(!direction)){
+        if(!isEmpty(!direction) || (path.onTheRoad() instanceof Vehicle)){
             return -1;
         }
 
-        //System.out.println("Dodace se voz.");
         if(!readyForNext){
             return -1;
         } else {

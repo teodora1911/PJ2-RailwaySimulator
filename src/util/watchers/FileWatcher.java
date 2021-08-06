@@ -21,6 +21,7 @@ public abstract class FileWatcher implements Runnable {
 
     public FileWatcher(String directory) throws IOException {
         this.directory = Paths.get(directory);
+        System.out.println(this.directory.toString());
         this.watcher = FileSystems.getDefault().newWatchService();
         this.directory.register(watcher, ENTRY_CREATE, ENTRY_MODIFY);
     }
@@ -49,12 +50,20 @@ public abstract class FileWatcher implements Runnable {
 
                 if(filename.toString().trim().endsWith(EXTENSION)){
                     if(kind.equals(ENTRY_MODIFY)){
-                        modifyAction(filename.toAbsolutePath());
+                        modifyAction(filename);
                     } else {
-                        creationAction(filename.toAbsolutePath());
+                        creationAction(filename);
                     }
                 }
             }
+        }
+    }
+
+    protected void sleep(){
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FileWatcher.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 }
