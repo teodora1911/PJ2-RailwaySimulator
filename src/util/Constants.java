@@ -4,7 +4,7 @@ import java.util.List;
 
 import element.ElementColor;
 
-public class Constants {
+public final class Constants {
     
     public static final int MAP_SIZE = 30;
     public static final int MIN_SPEED = 500; // in miliseconds
