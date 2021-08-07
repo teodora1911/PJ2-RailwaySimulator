@@ -192,7 +192,7 @@ public class MainWindowViewController {
                   Constants.RAILWAY_STATION_COLOR.g + "," +
                    Constants.RAILWAY_STATION_COLOR.b + ");"
                 );
-            gridLabels[field.getX()][field.getY()].setText("");
+            //gridLabels[field.getX()][field.getY()].setText("");
         } else {
             if(field.getElement() != null){
                 ElementColor color = field.getElement().getMapColor();
@@ -202,7 +202,7 @@ public class MainWindowViewController {
                   color.g + "," +
                    color.b + "); "
                 );
-                gridLabels[field.getX()][field.getY()].setText(field.getElement().getLabel());
+                //gridLabels[field.getX()][field.getY()].setText(field.getElement().getLabel());
             } else if (field.isUnderVoltage()){
                 gridLabels[field.getX()][field.getY()].setStyle(
                 "-fx-background-color: rgb(" +
@@ -210,7 +210,7 @@ public class MainWindowViewController {
                   255 + "," +
                    0 + ");"
                 );
-                gridLabels[field.getX()][field.getY()].setText("");
+                //gridLabels[field.getX()][field.getY()].setText("");
             } else {
                 FieldType type = field.getFieldType();
                 
@@ -222,7 +222,7 @@ public class MainWindowViewController {
                               Constants.ROAD_COLOR.g + "," +
                                Constants.ROAD_COLOR.b + ");"
                             );
-                        gridLabels[field.getX()][field.getY()].setText("");
+                        //gridLabels[field.getX()][field.getY()].setText("");
                         break;
                 
                     case RAILWAY:
@@ -232,7 +232,7 @@ public class MainWindowViewController {
                               Constants.RAILWAY_COLOR.g + "," +
                                Constants.RAILWAY_COLOR.b + ");"
                             );
-                        gridLabels[field.getX()][field.getY()].setText("");
+                        //gridLabels[field.getX()][field.getY()].setText("");
                         break;
 
                     case CROSSING:
@@ -242,7 +242,7 @@ public class MainWindowViewController {
                               Constants.CROSSING_COLOR.g + "," +
                                Constants.CROSSING_COLOR.b + ");"
                             );
-                        gridLabels[field.getX()][field.getY()].setText("");
+                        //gridLabels[field.getX()][field.getY()].setText("");
                         break;
                 }
             }

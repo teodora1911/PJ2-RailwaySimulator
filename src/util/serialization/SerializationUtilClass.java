@@ -6,9 +6,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import engine.Simulation;
 import train.Movement;
 
 public final class SerializationUtilClass {
@@ -17,11 +20,23 @@ public final class SerializationUtilClass {
     public static final String EXTENSION = ".ser";
     private static ReentrantReadWriteLock lock;
 
+    private static Handler handler;
+
+    static {
+        try {
+            handler = new FileHandler(Simulation.logDirectory + "serializationutilclass.log");
+            Logger.getLogger(SerializationUtilClass.class.getName()).addHandler(handler);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+
     private SerializationUtilClass(){
         super();
     }
 
-    public static void setLock(ReentrantReadWriteLock lock){ // samo se jednom moze da setuje, ukoliko je razlicito od 0
+    public static void setLock(ReentrantReadWriteLock lock){
         SerializationUtilClass.lock = lock;
     }
 

@@ -423,7 +423,7 @@ public class Map {
             }
             
         } else {
-            System.out.println("NEMA PRUZNOG PRELAZA NA NIJEDNOJ PRUZI????");
+            // Ovaj dio koda nikada ne bi trebao da se izvrsi
             return false;
         }
     }

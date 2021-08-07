@@ -84,7 +84,6 @@ public class Railway {
     }
 
     public synchronized void setReadyForNext() {
-        System.out.println("Setting ready for next...");
         this.readyForNext = true;
     }
 

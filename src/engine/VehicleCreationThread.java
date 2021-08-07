@@ -2,6 +2,8 @@ package engine;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,6 +18,16 @@ import map.Segment;
 public class VehicleCreationThread extends Thread {
 
     private Random rand = new Random();
+    private static Handler handler;
+
+    static{
+        try {
+            handler = new FileHandler(Simulation.logDirectory + "vehiclecreationthread.log");
+            Logger.getLogger(VehicleCreationThread.class.getName()).addHandler(handler);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     public VehicleCreationThread(){
         super();

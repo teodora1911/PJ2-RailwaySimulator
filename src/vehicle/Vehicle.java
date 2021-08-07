@@ -2,6 +2,8 @@ package vehicle;
 
 import static util.Constants.MIN_SPEED;
 
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,6 +22,17 @@ public abstract class Vehicle extends Element implements Runnable {
     protected int year;
     protected int speed;
     protected Segment road;
+
+    protected static Handler handler;
+
+    static {
+        try{
+            handler = new FileHandler(Simulation.logDirectory + "vehicle.log");
+            Logger.getLogger(Vehicle.class.getName()).addHandler(handler);
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
 
     // za sva vozila pravac je true, jer sadrze odgovarajuce segmente
     private static final boolean DIRECTION = true;
@@ -111,7 +124,7 @@ public abstract class Vehicle extends Element implements Runnable {
             }
         }
 
-        // sljedeci je null, vozilo treba da izadje sa mape
+        // dosli smo do kraja (gdje su sljedece koordinate null) i vozilo treba da izadje sa mape (tj oslobodi polje)
         synchronized(Map.updateLock){
             Map.getMap()[getX()][getY()].setElement(null);
         }

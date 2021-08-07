@@ -5,12 +5,15 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import element.RailwayElement;
 import engine.Simulation;
+import exceptions.TrainPathNotFoundException;
 import locomotive.Engine;
 import locomotive.Locomotive;
 import map.Coordinates;
@@ -39,12 +42,24 @@ public class Train implements Runnable {
     private Object speedLock = new Object();
     private Object movementLock = new Object();
 
+    protected static Handler handler;
+
+    static {
+        try {
+            handler = new FileHandler(Simulation.logDirectory + "train.log");
+            Logger.getLogger(Train.class.getName()).addHandler(handler);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public Train(int id, int speed, ArrayList<RailwayElement> configuration, LinkedList<RailwayStation> stations){
         this.id = id;
         this.initialSpeed = this.currentSpeed = speed;
         this.configuration = configuration;
         this.stations = stations;
         historyOfMovement.setTrainId(this.id);
+        historyOfMovement.setStationPath(this.stations);
         hasElectricEngine = (configuration.stream().filter(
             e -> e instanceof Locomotive).map(e -> (Locomotive)e).filter(l -> l.getEngine() == Engine.ELECTRIC).count() != 0);
         System.out.println("Has electric engine : " + hasElectricEngine);
@@ -92,7 +107,7 @@ public class Train implements Runnable {
         this.startingPosition = position;
     }
 
-    private Coordinates lookForNextPosition(Coordinates currentCoordinates) {
+    private Coordinates lookForNextPosition(Coordinates currentCoordinates) throws TrainPathNotFoundException {
         // ako se vec nalazi na stanici, ne treba vise da trazi sljedece koordinate
         if(Map.isStationOnField(currentCoordinates)){
             return currentCoordinates;
@@ -118,8 +133,7 @@ public class Train implements Runnable {
         possibleDirections = possibleDirections.stream().filter(filterForRailway).collect(Collectors.toList());
 
         if(possibleDirections.isEmpty()){
-            System.out.println("PRAZNA LISTA MOGUCIH PRAVACA?");
-            return null;
+            throw new TrainPathNotFoundException();
         }
 
         // uklanjamo sve koordinate po kojima se voz vec kretao i sve koordinate prethodne stanice, ako ih ima
@@ -127,8 +141,7 @@ public class Train implements Runnable {
         possibleDirections.removeAll(historyOfMovement.getPath());
 
         if(possibleDirections.size() != 1){
-            System.out.println("IMA VISE MOGUCIH PRAVACA?");
-            return null;
+            throw new TrainPathNotFoundException();
         } else {
             return possibleDirections.get(0);
         }
@@ -146,14 +159,14 @@ public class Train implements Runnable {
         }
     }
 
-    private void executeStep(){
+    private void executeStep() throws TrainPathNotFoundException {
         Field[][] map = Map.getMap();
         synchronized(Map.updateLock){
             if(hasElectricEngine){
                 setFieldUnderVoltage(lookaheadPosition);
             }
             Coordinates nextPosition = lookaheadPosition;
-            //System.out.println(nextPosition);
+
             for(RailwayElement element : configuration){
                 Coordinates currentPosition = element.getCoordinates();
                 element.setCoordinates(nextPosition);
@@ -174,14 +187,9 @@ public class Train implements Runnable {
             }
 
             lookaheadPosition = lookForNextPosition(lookaheadPosition);
-            if(lookaheadPosition != null){
-                if(hasElectricEngine){
-                    setFieldUnderVoltage(lookaheadPosition);
-                }
-            } else {
-                System.out.println("NE MOZE DA NADJE SLJEDECE KOORDINATE.");
+            if(hasElectricEngine){
+                setFieldUnderVoltage(lookaheadPosition);
             }
-
             Simulation.mwvc.makeChange();
         }
 
@@ -192,65 +200,75 @@ public class Train implements Runnable {
         }
     }
 
+    private void removeTrainFromMap(){
+        System.out.println("Removing train from map ...");
+        synchronized(Map.updateLock){
+            configuration.stream().forEach(element -> Map.getMap()[element.getX()][element.getY()].setElement(null));
+            Simulation.mwvc.makeChange();
+        }
+    }
+
     @Override
     public void run(){
-        System.out.println("VOZ JE KRENUO SA RADOM.");
-        historyOfMovement.setMovementTime(new Date().getTime());
-
-        currentStation = stations.peek();
-        stations.poll();
-
-        while(!stations.isEmpty()){ // sve dok ne prodje sve stanice, krece se
-
-            // ceka na trenutnoj stanici
-            historyOfMovement.setStationRetentionTime(currentStation.getName(), new Date().getTime());
-            synchronized(movementLock){
-                try{
-                    currentStation.addTrainToWaitingQueue(this);
-                    movementLock.wait();
-                } catch (InterruptedException ex){
-                    Logger.getLogger(Train.class.getName()).log(Level.SEVERE, "Neuspjesno cekanje na stanici.", ex);
-                    // break;
-                }
-            }
-            historyOfMovement.updateStationRetentionTime(currentStation.getName(), new Date().getTime());
-
-            // poziciju prije voza inicijalizujemo sa startingPosition koju smo dobili od stanice kada je pustala voz
-            lookaheadPosition = startingPosition;
-            // poziciju voza inicijalizujemo da koordinatama posljednjeg elementa u konfiguraciji - jer je svakako taj element u stanici (i dalje)
-            lookbehindPosition = configuration.get(configuration.size() - 1).getCoordinates();
-
-            // sve dok svi elementi nisu izasli iz stanice
-            while(Map.isStationOnField(lookbehindPosition)){
-                executeStep();
-            }
-
-            // kad su svi elementi izasli sa mape, tada salje iducoj stanici signal da moze da pusti druga vozila koja zele da idu u istom smjeru
-            getNextStation().outOfStation(this);
-
-            // sve dok svi elementi nisu usli u stanicu
-            while(!configuration.stream().allMatch(element -> Map.isStationOnField(element.getCoordinates()))){
-                executeStep();
-            }
-
-            // treba da resetujemo lookbehindPosition jer je usao u stanicu
-            if(hasElectricEngine){
-                synchronized(Map.updateLock){
-                    resetFieldUnderVoltage(lookbehindPosition);
-                    Simulation.mwvc.makeChange();
-                }
-            }
+        System.out.println("Train " + this.id + " is created ...");
+        try{
+            historyOfMovement.setMovementTime(new Date().getTime());
 
             currentStation = stations.peek();
             stations.poll();
-            currentStation.inTheStation(this);
+
+            while(!stations.isEmpty()){ // sve dok ne prodje sve stanice, krece se
+                // ceka na trenutnoj stanici
+                historyOfMovement.setStationRetentionTime(currentStation.getName(), new Date().getTime());
+                synchronized(movementLock){
+                    try{
+                        currentStation.addTrainToWaitingQueue(this);
+                        movementLock.wait();
+                    } catch (InterruptedException ex){
+                        Logger.getLogger(Train.class.getName()).log(Level.SEVERE, "Neuspjesno cekanje na stanici.", ex);
+                        // break;
+                    }
+                }
+                historyOfMovement.updateStationRetentionTime(currentStation.getName(), new Date().getTime());
+
+                // poziciju prije voza inicijalizujemo sa startingPosition koju smo dobili od stanice kada je pustala voz
+                lookaheadPosition = startingPosition;
+                // poziciju voza inicijalizujemo da koordinatama posljednjeg elementa u konfiguraciji - jer je svakako taj element u stanici (i dalje)
+                lookbehindPosition = configuration.get(configuration.size() - 1).getCoordinates();
+
+                // sve dok svi elementi nisu izasli iz stanice
+                while(Map.isStationOnField(lookbehindPosition)){
+                    executeStep();
+                }
+
+                // kad su svi elementi izasli sa mape, tada salje iducoj stanici signal da moze da pusti druga vozila koja zele da idu u istom smjeru
+                getNextStation().outOfStation(this);
+
+                // sve dok svi elementi nisu usli u stanicu
+                while(!configuration.stream().allMatch(element -> Map.isStationOnField(element.getCoordinates()))){
+                    executeStep();
+                }
+
+                // treba da resetujemo lookbehindPosition jer je usao u stanicu
+                if(hasElectricEngine){
+                    synchronized(Map.updateLock){
+                        resetFieldUnderVoltage(lookbehindPosition);
+                        Simulation.mwvc.makeChange();
+                    }
+                }
+
+                currentStation = stations.peek();
+                stations.poll();
+                currentStation.inTheStation(this);
+            }
+
+            historyOfMovement.updateMovementTime(new Date().getTime());
+            SerializationUtilClass.serializeMovement(historyOfMovement, "movement" + id);
+            //System.out.println(historyOfMovement.getPath());
+            //System.out.println("VOZ JE ZAVRSIO SA RADOM.");
+        } catch (TrainPathNotFoundException ex){
+            Logger.getLogger(Train.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            removeTrainFromMap();
         }
-
-        historyOfMovement.updateMovementTime(new Date().getTime());
-        SerializationUtilClass.serializeMovement(historyOfMovement, "movement" + id);
-
-        System.out.println(historyOfMovement.getPath());
-
-        System.out.println("VOZ JE ZAVRSIO SA RADOM.");
     }
 }

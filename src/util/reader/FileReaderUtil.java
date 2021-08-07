@@ -7,17 +7,20 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import engine.Simulation;
+import exceptions.InvalidFileInformationException;
 import map.Map;
 import train.Movement;
 import util.Constants;
 import util.serialization.SerializationUtilClass;
 
-// MORA SE INICIJALIZOVATI PRIJE POKRETANJA SIMULACIJE
 public class FileReaderUtil {
     
     public static final String configurationFilePath = "D:\\JAVA\\PROJEKTNI ZADATAK\\ProjektniZadatak2021\\ProjektniZadatak\\config\\ConfigurationFile.txt";
@@ -25,9 +28,16 @@ public class FileReaderUtil {
     private static String trainDirectoryPath = null;
     private static String movementDirectoryPath = null;
 
+    private static Handler handler;
     private static ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     static{
+        try {
+            handler = new FileHandler(Simulation.logDirectory + "filereader.log");
+            Logger.getLogger(FileReaderUtil.class.getName()).addHandler(handler);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         readFoldersPaths();
         SerializationUtilClass.setPath(movementDirectoryPath);
         SerializationUtilClass.setLock(lock);
@@ -50,12 +60,11 @@ public class FileReaderUtil {
 
     // KONFIGURACIONI FAJL - CITANJE INFORMACIJA O PUTEVIMA
     public void readRoadInfo(){
-        System.out.println("Reading road info ....");
         try(Stream<String> stream = Files.lines(Paths.get(configurationFilePath))){
 
             List<String> roadInfoLines = stream.limit(3).collect(Collectors.toList());
             if(roadInfoLines.size() != 3){
-                throw new IllegalArgumentException("Configuration file is not valid.");
+                throw new InvalidFileInformationException("Nisu zapisane informacije za sve puteve.");
             }
 
             for(String line : roadInfoLines){
@@ -63,19 +72,19 @@ public class FileReaderUtil {
 
                 try{
                     if(seg.length != 3){
-                        throw new IllegalArgumentException("Road info is not valid.");
+                        throw new InvalidFileInformationException("Nema dovoljno informacija za dati put.");
                     }
 
                     int roadIndex = Integer.parseInt(seg[0]);
                     if(roadIndex <= 0 || roadIndex >= 4){
-                        throw new IllegalArgumentException("Road info is not valid.");
+                        throw new InvalidFileInformationException("Unesen je nevalidan ideks puta.");
                     }
 
                     int roadMaxSpeed = Integer.parseInt(seg[1]);
                     int roadNumberOfVehicles = Integer.parseInt(seg[2]);
 
                     if(roadNumberOfVehicles < 0){
-                        throw new IllegalArgumentException("Road info is not valid.");
+                        throw new InvalidFileInformationException("Broj vozila na putu ne moze da bude negativan broj.");
                     }
 
                     if(roadMaxSpeed >= Constants.MIN_SPEED){
@@ -83,7 +92,7 @@ public class FileReaderUtil {
                     }
                     Map.getRoad(roadIndex).setNumberOfVehicles(roadNumberOfVehicles);
 
-                } catch (IllegalArgumentException ex){
+                } catch (Exception ex){
                     Logger.getLogger(FileReaderUtil.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }

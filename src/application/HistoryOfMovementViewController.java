@@ -22,12 +22,6 @@ public class HistoryOfMovementViewController {
 
     private TableView<Map.Entry<String, String>> table;
 
-    //static {
-    //    scene = new Scene(root, 500, 500);
-    //    stage.setScene(scene);
-    //    stage.setTitle("Zavrsene dionice");
-    //}
-
     public HistoryOfMovementViewController(){
         setTableView();
      }

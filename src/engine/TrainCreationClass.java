@@ -8,12 +8,15 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import element.RailwayElement;
+import exceptions.InvalidFileInformationException;
 import locomotive.Engine;
 import locomotive.LoadLocomotive;
 import locomotive.PassengerLocomotive;
@@ -35,6 +38,17 @@ import wagon.SpecialWagon;
 public class TrainCreationClass {
     private String path;
 
+    private static Handler handler;
+
+    static {
+        try {
+            handler = new FileHandler(Simulation.logDirectory + "traincreation.log");
+            Logger.getLogger(TrainCreationClass.class.getName()).addHandler(handler);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public TrainCreationClass(String path){
         this.path = path;
         readFiles();
@@ -54,27 +68,28 @@ public class TrainCreationClass {
     }
 
     public void createNewTrain(Path filename){
+
         try (Stream<String> stream = Files.lines(filename)){
             List<String> lines = stream.collect(Collectors.toList());
             if(lines.size() != 5){
-                throw new IllegalArgumentException("Train configuration is not valid.");
+                throw new InvalidFileInformationException("Nema dovoljno podataka u fajlu.");
             }
 
             int id = Integer.parseInt(lines.get(0));
             int speed = Integer.parseInt(lines.get(1));
 
             if(speed < Constants.MIN_SPEED){
-                throw new IllegalArgumentException("Train configuration is not valid.");
+                throw new InvalidFileInformationException("Brzina treba da bude veca od 0.5 s.");
             }
 
             if(!validTrainConfiguration(lines.get(2).split("-"))){
-                throw new IllegalArgumentException("Train configuration is not valid.");
+                throw new InvalidFileInformationException("Lokomotive i vagoni nisu odgovarajuce slozeni i/ili rasporedjeni.");
             }
             String src = lines.get(3);
             String dest = lines.get(4);
 
             if(!Constants.STATION_NAMES.contains(src) || !Constants.STATION_NAMES.contains(dest) || src.equals(dest)){
-                throw new IllegalArgumentException("Train configuration is not valid.");
+                throw new InvalidFileInformationException("Imena stanica nisu odgovarajuca.");
             }
 
             ArrayList<String> stationsRoute = RailwayStationsGraph.findRoute(src, dest);
@@ -82,13 +97,13 @@ public class TrainCreationClass {
             for(String s : stationsRoute){
                 RailwayStation station = Map.getStation(s);
                 if(station == null){
-                    throw new IllegalArgumentException("Problem u stanicama.");
+                    throw new IllegalArgumentException("Ne mogu da se nadju odgovarajuce stanice.");
                 }
                 stations.offer(station);
             }
 
             if(stations.isEmpty()){
-                throw new IllegalArgumentException("Lista stanica je prazna.");
+                throw new IllegalArgumentException("Lista stanica je prazna. Nemoguce je pronaci odgovarajuce stanice.");
             }
 
             Coordinates coordinates = stations.peek().getCoordinates().stream().findAny().get(); // biramo bilo koju koorinatu na kojoj se nalazi prva stanica voza
@@ -98,7 +113,7 @@ public class TrainCreationClass {
             new Thread(newTrain).start();
         } catch (Exception ex) {
             Logger.getLogger(TrainCreationClass.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            // ako dodje do bilo kakvog izuzetka, obrisati dati fajl
+            System.out.println("Da li je neodogvarajuci fajl obrisan : " + filename.toFile().delete());
         }
     }
 
