@@ -113,40 +113,29 @@ public class TrainCreationClass {
             new Thread(newTrain).start();
         } catch (Exception ex) {
             Logger.getLogger(TrainCreationClass.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            System.out.println("Da li je neodogvarajuci fajl obrisan : " + filename.toFile().delete());
+            filename.toFile().delete();
         }
     }
 
     private boolean validTrainConfiguration(String[] railwayElements) {
-        // ako je duzina voza 0 ili prvi element voza nije lokomotiva, tada konfiguracija nije validna
         if(railwayElements.length < 1 || Arrays.stream(Constants.LocomotiveLabels.values()).noneMatch(e -> e.getValue().equals(railwayElements[0]))){
             return false;
         }
 
-        // izdvajamo sve lokomotive koje su definisane, radimo distinct da ne bismo imali duplikata
         List<String> locomotives = Arrays.stream(railwayElements).filter(e -> e.endsWith("L")).distinct().collect(Collectors.toList());
 
-        // provjeravamo da li se ti svi stringovi poklapaju sa oznakama za lokomotive
         for(String label : locomotives){
-            // i ovdje, ako se oznake lokomotiva ne poklapaju sa definisanim oznakama, tada nije validna konfiguracija
             if(Arrays.stream(Constants.LocomotiveLabels.values()).noneMatch(e -> e.getValue().equals(label))){
                 return false;
             }
         }
 
-        // sve lokomotive su validne i izbacujemo iz liste univerzalnu lokomotivu
         locomotives.remove(Constants.LocomotiveLabels.UNIVERSAL.getValue());
-
-        // ako je velicina liste veca od 1, to znaci da imamo vise razlicitih vrsta lokomotiva koje se ne mogu da sklapaju zajedno
-        // pa konfiguracija voza u ovom slucaju nije validna
         if(locomotives.size() > 1){
             return false;
         }
 
-        // ukoliko je velicina liste 0, onda su definisane samo univerzalne lokomotive
 
-
-        // skoro analogno radimo i sa vagonima
         List<String> wagons = Arrays.stream(railwayElements).filter(e -> e.endsWith("V")).distinct().collect(Collectors.toList());
         for(String label : wagons){
             if(Arrays.stream(Constants.WagonLabels.values()).noneMatch(e -> e.getValue().equals(label))){
@@ -156,22 +145,16 @@ public class TrainCreationClass {
 
         
         List<String> passengerWagonLabels = Constants.WagonLabels.getPassegnerWagonLabels();
-        // ukoliko lista vagona sadrzi bilo koju oznaku za PUTNICKI vagon
         if(wagons.stream().anyMatch(e -> passengerWagonLabels.contains(e))){
-            // i ako sadrzi labele ili za teretni ili za specijalni, konfiguracija nije validna
             if(wagons.contains(Constants.WagonLabels.LOAD.getValue()) || wagons.contains(Constants.WagonLabels.SPECIAL.getValue())){
                 return false;
             }
-        } else { // ako ne sadrzi labele za putnicke vagone
-            // provjeravamo da li sadzi obe labele, i ako sadrzi onda nije validno
+        } else { 
             if(wagons.contains(Constants.WagonLabels.LOAD.getValue()) && wagons.contains(Constants.WagonLabels.SPECIAL.getValue())){
                 return false;
             }
         }
 
-        // sada bi i konfiguracija i za vagone trebala da bude validna 
-        // prvo provjeravamo da li je velicina liste lokomotiva prazna - sto znaci da imamo samo univerzalne
-        // pa posto svaki tip vagona moze da ide sa univerzalnim, vracamo true
         if(locomotives.isEmpty() || wagons.isEmpty()){
             return true;
         }
@@ -213,7 +196,7 @@ public class TrainCreationClass {
         Engine engine = Engine.fromId((rand.nextInt() % 3) + 1);
 
         for(String element : configurationString){
-            if(element.endsWith("L")){ // znaci da je lokomotiva
+            if(element.endsWith("L")){
                 Constants.LocomotiveLabels type = Constants.LocomotiveLabels.fromString(element);
                 switch (type) {
                     case PASSENGER:
@@ -232,7 +215,7 @@ public class TrainCreationClass {
                         configuration.add(new UniversalLocomotive(x, y, rand.nextDouble(), engine));
                         break;
                 }
-            } else { // inace je vagon
+            } else {
                 Constants.WagonLabels type = Constants.WagonLabels.fromString(element);
                 switch (type) {
                     case SEAT:

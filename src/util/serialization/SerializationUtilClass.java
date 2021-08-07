@@ -61,7 +61,7 @@ public final class SerializationUtilClass {
         }
     }
 
-    public static Movement deserializeMovement(String filename){ // filename je vec sa ekstenzijom
+    public static Movement deserializeMovement(String filename){
         Movement movement = null;
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(path + filename))) {
             movement = (Movement)in.readObject();

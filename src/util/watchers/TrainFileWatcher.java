@@ -21,7 +21,7 @@ public class TrainFileWatcher extends FileWatcher {
 
     @Override
     public void creationAction(Path filename) {
-        if(!lastAddedTrainFile.equals(filename.toString())){
+        if(!lastAddedTrainFile.equals(filename.toString())){ // FileWatcherExplanation
             lastAddedTrainFile = filename.toString();
             this.sleep();
             System.out.println("Naredba da se kreira novi voz ...");

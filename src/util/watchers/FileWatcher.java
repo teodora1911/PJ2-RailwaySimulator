@@ -38,7 +38,6 @@ public abstract class FileWatcher implements Runnable {
 
     public FileWatcher(String directory) throws IOException {
         this.directory = Paths.get(directory);
-        System.out.println(this.directory.toString());
         this.watcher = FileSystems.getDefault().newWatchService();
         this.directory.register(watcher, ENTRY_CREATE, ENTRY_MODIFY);
     }

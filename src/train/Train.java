@@ -28,14 +28,14 @@ public class Train implements Runnable {
     private ArrayList<RailwayElement> configuration;
     private LinkedList<RailwayStation> stations;
     private int id;
-    private int initialSpeed; // in miliseconds
-    private int currentSpeed; // in miliseconds
+    private int initialSpeed;
+    private int currentSpeed;
     private Movement historyOfMovement = new Movement();
     private RailwayStation currentStation;
 
-    private Coordinates startingPosition; // postavlja stanica kada pusta voz da se krece
-    private Coordinates lookaheadPosition; // polje ispred voza
-    private Coordinates lookbehindPosition; // polje iza voza
+    private Coordinates startingPosition; 
+    private Coordinates lookaheadPosition; 
+    private Coordinates lookbehindPosition;
 
     private boolean hasElectricEngine = false;
 
@@ -103,12 +103,12 @@ public class Train implements Runnable {
         return stations.peek();
     }
 
-    public void setStartingPosition(Coordinates position){ // postavlja stanica kada voz treba da pocne sa kretanjem
+    public void setStartingPosition(Coordinates position){
         this.startingPosition = position;
     }
 
     private Coordinates lookForNextPosition(Coordinates currentCoordinates) throws TrainPathNotFoundException {
-        // ako se vec nalazi na stanici, ne treba vise da trazi sljedece koordinate
+        // ukoliko je jedan zeljeznicki element u konfiguraciji u stanici, ne treba vise da trazi sljedece koordinate
         if(Map.isStationOnField(currentCoordinates)){
             return currentCoordinates;
         }
@@ -125,18 +125,16 @@ public class Train implements Runnable {
         possibleDirections.add(eastC);
         Field[][] map = Map.getMap();
 
-        // filtiriramo one koordinate koje su VALIDNE, koje su PRUGE ili PRUZNI PRELAZI ili STANICA
         Predicate<Coordinates> filterForRailway = (c) -> c.isValid() && map[c.getX()][c.getY()] != null && (map[c.getX()][c.getY()].getFieldType() == FieldType.RAILWAY ||
         map[c.getX()][c.getY()].getFieldType() == FieldType.CROSSING || map[c.getX()][c.getY()].getStation() != null);
 
-        // i te koordinate smjestimo u listu mogucih koordinata
         possibleDirections = possibleDirections.stream().filter(filterForRailway).collect(Collectors.toList());
 
         if(possibleDirections.isEmpty()){
             throw new TrainPathNotFoundException();
         }
 
-        // uklanjamo sve koordinate po kojima se voz vec kretao i sve koordinate prethodne stanice, ako ih ima
+        // uklanjamo sve koordinate po kojima se voz vec kretao i sve koordinate prethodne stanice
         possibleDirections.removeAll(currentStation.getCoordinates());
         possibleDirections.removeAll(historyOfMovement.getPath());
 
@@ -217,8 +215,7 @@ public class Train implements Runnable {
             currentStation = stations.peek();
             stations.poll();
 
-            while(!stations.isEmpty()){ // sve dok ne prodje sve stanice, krece se
-                // ceka na trenutnoj stanici
+            while(!stations.isEmpty()){
                 historyOfMovement.setStationRetentionTime(currentStation.getName(), new Date().getTime());
                 synchronized(movementLock){
                     try{
@@ -231,25 +228,23 @@ public class Train implements Runnable {
                 }
                 historyOfMovement.updateStationRetentionTime(currentStation.getName(), new Date().getTime());
 
-                // poziciju prije voza inicijalizujemo sa startingPosition koju smo dobili od stanice kada je pustala voz
                 lookaheadPosition = startingPosition;
-                // poziciju voza inicijalizujemo da koordinatama posljednjeg elementa u konfiguraciji - jer je svakako taj element u stanici (i dalje)
                 lookbehindPosition = configuration.get(configuration.size() - 1).getCoordinates();
 
-                // sve dok svi elementi nisu izasli iz stanice
                 while(Map.isStationOnField(lookbehindPosition)){
                     executeStep();
                 }
 
-                // kad su svi elementi izasli sa mape, tada salje iducoj stanici signal da moze da pusti druga vozila koja zele da idu u istom smjeru
+                /**
+                 * Kada u potpunosti izadje iz stanice, voz daje signal (sljedecoj stanici)
+                 * da moze da se pustaju vozovi koji idu u istom smjeru.
+                 */
                 getNextStation().outOfStation(this);
 
-                // sve dok svi elementi nisu usli u stanicu
                 while(!configuration.stream().allMatch(element -> Map.isStationOnField(element.getCoordinates()))){
                     executeStep();
                 }
 
-                // treba da resetujemo lookbehindPosition jer je usao u stanicu
                 if(hasElectricEngine){
                     synchronized(Map.updateLock){
                         resetFieldUnderVoltage(lookbehindPosition);
@@ -264,10 +259,12 @@ public class Train implements Runnable {
 
             historyOfMovement.updateMovementTime(new Date().getTime());
             SerializationUtilClass.serializeMovement(historyOfMovement, "movement" + id);
-            //System.out.println(historyOfMovement.getPath());
-            //System.out.println("VOZ JE ZAVRSIO SA RADOM.");
         } catch (TrainPathNotFoundException ex){
             Logger.getLogger(Train.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            /**
+             * Ako voz ne moze da nadje sljedece koordinate, 
+             * uklanjamo ga sa mape.
+             */
             removeTrainFromMap();
         }
     }

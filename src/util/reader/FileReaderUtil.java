@@ -46,8 +46,6 @@ public class FileReaderUtil {
 
     public FileReaderUtil() { 
        readRoadInfo();
-       System.out.println("Train Directory : " + trainDirectoryPath);
-       System.out.println("Movement Directory : " + movementDirectoryPath);
     }
 
     public String getTrainDirectoryPath(){

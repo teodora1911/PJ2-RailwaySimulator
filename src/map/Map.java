@@ -387,28 +387,23 @@ public class Map {
         }
     }
 
-    public static boolean freeForCrossing(Field field){ // field nam je polje na kom se nalazi pruzni prelaz
-        // trazimo prvo prugu na kom se nalazi taj pruzni prelaz, odnosno prugu koja presijeca dati put
+    /**
+     * 
+     * @param field - polje mape na kom se nalazi pruzni prelaz
+     */
+    public static boolean freeForCrossing(Field field){
         Optional<Railway> r = railways.stream().filter(railway -> railway.getPath().contains(field)).findAny();
-        // ovaj uslov bi uvijek trebao da bude ispunjen akko su koordinate i polja hard-code-ovana dobro
         if(r.isPresent()){
             Railway railway = r.get();
-            // trazim indeks tog polja na pruzi
             int fieldIndex = railway.getPath().getSegment().indexOf(field);
-            // trazimo posljednji voz koji je trenutno aktivan na toj pruzi
             Train lastAdded = railway.getPresentLastAdded();
-            // ako ima trenutno aktivnih vozova
             if(lastAdded != null){
-                // gledamo pravac u kom se on krece (poklapa se sa pravcem pruge koji smo unaprijed definisali)
                 boolean direction = (lastAdded.getNextStation() == railway.getEndStation());
                 synchronized(Map.updateLock){
-                    // uzimam koordinate posljednje lokomotive/vagona sto cini taj voz
                     Coordinates lastCoordinates = lastAdded.getConfiguration().get(lastAdded.getConfiguration().size() - 1).getCoordinates();
-                    // provjeravamo da li je taj element u stanici
                     if(map[lastCoordinates.getX()][lastCoordinates.getY()].getStation() != null){
                         return false;
                     } else {
-                        // ako nije u stanici, onda trazimo te koordinate na pruzi, tj. njihov ideks i na osnovu direction, poredimo : 
                         Field lastConfigurationElementField = map[lastCoordinates.getX()][lastCoordinates.getY()];
                         int lastConfigurationElementIndex = railway.getPath().getSegment().indexOf(lastConfigurationElementField);
                         if(direction){
@@ -420,8 +415,7 @@ public class Map {
                 }
             } else {
                 return true;
-            }
-            
+            } 
         } else {
             // Ovaj dio koda nikada ne bi trebao da se izvrsi
             return false;

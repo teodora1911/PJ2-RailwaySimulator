@@ -48,7 +48,7 @@ public class Road {
                 currentNumberOfVehicles = numberOfVehicles;
             }
         } else {
-            //System.out.println("Ignoring less/equal number of vehicles ...");
+            // Ignorisanje manjeg/jednakog broja novih vozila
         }
     }
 
