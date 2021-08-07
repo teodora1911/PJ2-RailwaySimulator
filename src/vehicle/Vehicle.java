@@ -127,6 +127,7 @@ public abstract class Vehicle extends Element implements Runnable {
         // dosli smo do kraja (gdje su sljedece koordinate null) i vozilo treba da izadje sa mape (tj oslobodi polje)
         synchronized(Map.updateLock){
             Map.getMap()[getX()][getY()].setElement(null);
+            Simulation.mwvc.makeChange();
         }
     }
 
