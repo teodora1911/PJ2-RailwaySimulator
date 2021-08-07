@@ -6,7 +6,7 @@ import util.Constants;
 public class LoadLocomotive extends Locomotive {
     
     public LoadLocomotive(int x, int y, double power, Engine engine){
-        super(x, y, new ElementColor(204, 201, 242), Constants.LocomotiveLabels.LOAD.getValue(), power, engine);
+        super(x, y, new ElementColor(94, 57, 155), Constants.LocomotiveLabels.LOAD.getValue(), power, engine);
     }
 
     @Override

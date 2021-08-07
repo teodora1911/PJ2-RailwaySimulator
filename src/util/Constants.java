@@ -39,7 +39,6 @@ public final class Constants {
     }
 
     public enum WagonLabels {
-        //PASSENGER("PV"),
         SEAT("SV"),
         BED("LV"),
         SLEEP("ZV"),

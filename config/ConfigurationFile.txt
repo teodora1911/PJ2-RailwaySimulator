@@ -1,5 +1,5 @@
-1:800:10
-2:750:9
-3:1000:9
+1:800:5
+2:750:4
+3:1000:6
 D:\JAVA\PROJEKTNI ZADATAK\ProjektniZadatak2021\ProjektniZadatak\kretanja\
 D:\JAVA\PROJEKTNI ZADATAK\ProjektniZadatak2021\ProjektniZadatak\vozovi\

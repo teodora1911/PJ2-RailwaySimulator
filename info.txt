@@ -1,0 +1,51 @@
+VOZOVI : 
+~ Linija voza u svakom txt fajlu treba da bude u sljedećem formatu : 
+	ID voza
+	Brzina voza
+	Konfiguracija (*)
+	Početna stanica
+	Odredišna stanica
+
+(*) :
+Svaki tip lokomotive i vagona ima svoju oznaku koja je unaprijed definisana i te oznake koristimo prilikom definisanja konfiguracije.
+Separator između pojedinačnih željezničkih elemenata (lokomotiva i vagona) je : - .
+Takođe, bitan je redoslijed željezničkih elemenata u konfiguraciji.
+Željeznički elementi : 
+ 
+ ~ Lokomotive : 
+	* Putnička (oznaka - PL ; boja na mapi - (177, 95, 95))
+	* Manevarska (oznaka - ML ; boja na mapi - (170, 170, 119))
+	* Teretna (oznaka - TL ; boja na mapi - (94, 57, 155))
+	* Univerzalna (oznaka - UL ; boja na mapi - (254, 227, 226))
+
+ ~ Vagoni : 
+	* Putnički (boja na mapi - (136, 69, 69))
+	   - sa sjedištima (oznaka - SV)
+	   - sa ležajima (oznaka - LV)
+	   - za spavanje (oznaka - ZV)
+	   - restoran (oznaka - RV)
+	* Teretni (oznaka - TV ; boja na mapi - (156, 152, 210))
+	* Za posebne namjene (oznaka - XV ; boja na mapi - (163, 163, 11))
+
+
+VOZILA : 
+~ Atributi potrebni za kreiranje vozila se generišu slučajno.
+
+ * Automobil (oznaka - A ; boja na mapi - (117, 0, 231))
+ * Kamion ( oznaka - K ; boja na mapi - (0, 231, 163))
+
+
+PUTEVI I PRUGE : 
+~ Svaki put i pruga imaju svoj identifikator i on je takođe unaprijed definisan.
+
+Putevi : 
+	(ID) 1 - lijevo 
+	(ID) 2 - srednji
+	(ID) 3 - desno
+
+Pruge : 
+	(ID) 1 - od stanice A do stanice B
+	(ID) 2 - od stanice B do stanice C
+	(ID) 3 - od stanice C do stanice D
+	(ID) 4 - od stanice C do stanice E
+
