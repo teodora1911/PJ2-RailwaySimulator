@@ -5,7 +5,7 @@ import element.RailwayElement;
 
 public abstract class Wagon extends RailwayElement {
     
-    private int length;
+    protected int length;
 
     public Wagon(int x, int y, ElementColor mapColor, String label, int length){
         super(x, y, mapColor, label);

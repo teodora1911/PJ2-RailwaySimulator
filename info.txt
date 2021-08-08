@@ -1,7 +1,7 @@
 VOZOVI : 
 ~ Linija voza u svakom txt fajlu treba da bude u sljedećem formatu : 
 	ID voza
-	Brzina voza
+	Brzina voza (u milisekundama)
 	Konfiguracija (*)
 	Početna stanica
 	Odredišna stanica

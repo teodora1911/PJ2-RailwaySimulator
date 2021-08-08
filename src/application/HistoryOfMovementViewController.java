@@ -48,7 +48,12 @@ public class HistoryOfMovementViewController {
         });
 
 
-        ObservableList<Map.Entry<String, String>> items = FXCollections.observableArrayList(map.entrySet());
+        ObservableList<Map.Entry<String, String>> items;
+        if(map != null && !map.isEmpty()){
+            items = FXCollections.observableArrayList(map.entrySet());
+        } else {
+            items = FXCollections.observableArrayList();
+        }
         table = new TableView<>(items);
         table.setEditable(false);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
