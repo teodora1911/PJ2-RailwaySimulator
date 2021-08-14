@@ -1,5 +1,6 @@
 package engine;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.logging.FileHandler;
@@ -22,7 +23,7 @@ public class VehicleCreationThread extends Thread {
 
     static{
         try {
-            handler = new FileHandler(Simulation.logDirectory + "vehiclecreationthread.log");
+            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "vehicle.log");
             Logger.getLogger(VehicleCreationThread.class.getName()).addHandler(handler);
         } catch (Exception ex) {
             ex.printStackTrace();

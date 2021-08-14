@@ -42,7 +42,7 @@ public class TrainCreationClass {
 
     static {
         try {
-            handler = new FileHandler(Simulation.logDirectory + "traincreation.log");
+            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "train.log");
             Logger.getLogger(TrainCreationClass.class.getName()).addHandler(handler);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -112,7 +112,7 @@ public class TrainCreationClass {
             Train newTrain = new Train(id, speed, configuration, stations);
             new Thread(newTrain).start();
         } catch (Exception ex) {
-            Logger.getLogger(TrainCreationClass.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            Logger.getLogger(TrainCreationClass.class.getName()).log(Level.FINE, ex.getMessage(), ex);
             filename.toFile().delete();
         }
     }

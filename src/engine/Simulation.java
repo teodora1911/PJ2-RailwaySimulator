@@ -1,5 +1,6 @@
 package engine;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -13,7 +14,7 @@ import util.watchers.TrainFileWatcher;
 
 public class Simulation {
 
-    public static final String logDirectory = "D:\\JAVA\\PROJEKTNI ZADATAK\\ProjektniZadatak2021\\ProjektniZadatak\\loggeri\\";
+    public static final String loggerDirectoryPath = "D:\\JAVA\\PROJEKTNI ZADATAK\\ProjektniZadatak2021\\ProjektniZadatak\\loggeri";
     
     public static MainWindowViewController mwvc;
     public static FileReaderUtil fileReader;
@@ -23,7 +24,7 @@ public class Simulation {
 
     static {
         try {
-            handler = new FileHandler(logDirectory + "simulation.log");
+            handler = new FileHandler(loggerDirectoryPath + File.separator + "simulation.log");
             Logger.getLogger(Simulation.class.getName()).addHandler(handler);
         } catch (Exception e) {
             e.printStackTrace();

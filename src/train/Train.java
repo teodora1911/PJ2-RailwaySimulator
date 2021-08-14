@@ -1,5 +1,6 @@
 package train;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -46,7 +47,7 @@ public class Train implements Runnable {
 
     static {
         try {
-            handler = new FileHandler(Simulation.logDirectory + "train.log");
+            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "train.log");
             Logger.getLogger(Train.class.getName()).addHandler(handler);
         } catch (Exception ex) {
             ex.printStackTrace();

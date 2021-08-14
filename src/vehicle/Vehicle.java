@@ -2,6 +2,7 @@ package vehicle;
 
 import static util.Constants.MIN_SPEED;
 
+import java.io.File;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -27,7 +28,7 @@ public abstract class Vehicle extends Element implements Runnable {
 
     static {
         try{
-            handler = new FileHandler(Simulation.logDirectory + "vehicle.log"); // ..., 8096, 1, true
+            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "vehicle.log"); // ..., 8096, 1, true
             Logger.getLogger(Vehicle.class.getName()).addHandler(handler);
         } catch (Exception ex){
             ex.printStackTrace();

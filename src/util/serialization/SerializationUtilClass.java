@@ -1,5 +1,6 @@
 package util.serialization;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,7 +25,7 @@ public final class SerializationUtilClass {
 
     static {
         try {
-            handler = new FileHandler(Simulation.logDirectory + "serializationutilclass.log");
+            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "serialization.log");
             Logger.getLogger(SerializationUtilClass.class.getName()).addHandler(handler);
         } catch (Exception ex) {
             ex.printStackTrace();

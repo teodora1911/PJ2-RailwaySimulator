@@ -3,6 +3,7 @@ package util.watchers;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -29,7 +30,7 @@ public abstract class FileWatcher implements Runnable {
 
     static {
         try {
-            handler = new FileHandler(Simulation.logDirectory + "filewatcher.log");
+            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "watcher.log");
             Logger.getLogger(FileWatcher.class.getName()).addHandler(handler);
         } catch (Exception ex) {
             ex.printStackTrace();

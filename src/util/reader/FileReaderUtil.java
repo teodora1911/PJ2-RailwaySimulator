@@ -33,7 +33,7 @@ public class FileReaderUtil {
 
     static{
         try {
-            handler = new FileHandler(Simulation.logDirectory + "filereader.log");
+            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "reader.log");
             Logger.getLogger(FileReaderUtil.class.getName()).addHandler(handler);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -91,7 +91,7 @@ public class FileReaderUtil {
                     Map.getRoad(roadIndex).setNumberOfVehicles(roadNumberOfVehicles);
 
                 } catch (Exception ex){
-                    Logger.getLogger(FileReaderUtil.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                    Logger.getLogger(FileReaderUtil.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
                 }
             }
         } catch (Exception ex){
