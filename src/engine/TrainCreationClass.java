@@ -112,7 +112,7 @@ public class TrainCreationClass {
             Train newTrain = new Train(id, speed, configuration, stations);
             new Thread(newTrain).start();
         } catch (Exception ex) {
-            Logger.getLogger(TrainCreationClass.class.getName()).log(Level.FINE, ex.getMessage(), ex);
+            Logger.getLogger(TrainCreationClass.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             filename.toFile().delete();
         }
     }

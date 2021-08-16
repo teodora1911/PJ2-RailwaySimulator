@@ -8,7 +8,7 @@ import java.util.Optional;
 import railwaystation.RailwayStation;
 import train.Train;
 
-public class Map {
+public final class Map {
     
     private static Field[][] map = new Field[MAP_SIZE][MAP_SIZE];
 
