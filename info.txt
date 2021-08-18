@@ -27,6 +27,7 @@ Takođe, bitan je redoslijed željezničkih elemenata u konfiguraciji.
 	* Teretni (oznaka - TV ; boja na mapi - (156, 152, 210))
 	* Za posebne namjene (oznaka - XV ; boja na mapi - (163, 163, 11))
 
+Polje pod naponom je obojeno žutom bojom.
 
 VOZILA : 
 ~ Atributi potrebni za kreiranje vozila se generišu slučajno.

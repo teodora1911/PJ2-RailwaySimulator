@@ -1,5 +1,9 @@
 package engine;
 
+import static util.Constants.MIN_SPEED;
+import static util.Constants.MODELS;
+import static util.Constants.BRANDS;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.Random;
@@ -7,8 +11,6 @@ import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static util.Constants.MIN_SPEED;
 
 import map.Map;
 import util.Constants;
@@ -20,6 +22,9 @@ public class VehicleCreationThread extends Thread {
 
     private Random rand = new Random();
     private static Handler handler;
+
+    public static final int START_YEAR = 1950;
+    public static final int YEAR_PERIOD = 70;
 
     static{
         try {
@@ -49,9 +54,9 @@ public class VehicleCreationThread extends Thread {
                         boolean direction = (rand.nextInt() % 2 == 0);
                         Segment road = Map.getRoads().get(i).getPath(direction);
                         if(rand.nextInt() % 2 == 0){
-                            new Thread(new Car(road, rand.nextInt(Map.getRoads().get(i).getMaxSpeed() - MIN_SPEED) + MIN_SPEED, "brand", "model", 1, 4)).start();
+                            new Thread(new Car(road, rand.nextInt(Map.getRoads().get(i).getMaxSpeed() - MIN_SPEED) + MIN_SPEED, BRANDS[rand.nextInt(BRANDS.length)], MODELS[rand.nextInt(MODELS.length)], rand.nextInt(YEAR_PERIOD) + START_YEAR, rand.nextInt(5) + 2)).start();
                         } else {
-                            new Thread(new Truck(road, rand.nextInt(Map.getRoads().get(i).getMaxSpeed() - MIN_SPEED) + MIN_SPEED, "brand", "model", 1, 4)).start();
+                            new Thread(new Truck(road, rand.nextInt(Map.getRoads().get(i).getMaxSpeed() - MIN_SPEED) + MIN_SPEED, BRANDS[rand.nextInt(BRANDS.length)], MODELS[rand.nextInt(MODELS.length)], rand.nextInt(YEAR_PERIOD) + START_YEAR, rand.nextDouble() * 1000.0 + 500.0)).start();
                         }
 
                         --numberOfVehicles[i];

@@ -12,6 +12,9 @@ public final class Constants {
 
     public static final List<String> STATION_NAMES = List.of("A", "B", "C", "D", "E");
 
+    public static final String[] BRANDS = {"Mercedes", "Volvo", "Ford", "Chevrolet", "Jeep", "Toyota", "Nissan", "Honda", "Volkswagen", "Audi", "Cadillac", "Citroen", "Fiat", "Ferrari", "Hyundai", "Kia", "Lamborghini", "Mazda", "Peugeot", "Renault", "Suzuki"};
+    public static final String[] MODELS = {"Sedan", "Coupe", "Sports", "Station wagon", "Hatchback", "Convertibile", "SUV", "Milivan", "Pickup truck"};
+
     public enum LocomotiveLabels {
         PASSENGER("PL"),
         LOAD("TL"),
