@@ -11,29 +11,32 @@ Svaki tip lokomotive i vagona ima svoju oznaku koja je unaprijed definisana i te
 Separator između pojedinačnih željezničkih elemenata (lokomotiva i vagona) je : - .
 Takođe, bitan je redoslijed željezničkih elemenata u konfiguraciji.
 Željeznički elementi : 
+(oznaka ; boja na mapi(r, g, b))
  
  ~ Lokomotive : 
-	* Putnička (oznaka - PL ; boja na mapi - (177, 95, 95))
-	* Manevarska (oznaka - ML ; boja na mapi - (170, 170, 119))
-	* Teretna (oznaka - TL ; boja na mapi - (94, 57, 155))
-	* Univerzalna (oznaka - UL ; boja na mapi - (254, 227, 226))
+	* Putnička (PL ; (177, 95, 95))
+	* Manevarska (ML ; (170, 170, 119))
+	* Teretna (TL ; (94, 57, 155))
+	* Univerzalna (UL ; (254, 227, 226))
 
  ~ Vagoni : 
-	* Putnički (boja na mapi - (136, 69, 69))
-	   - sa sjedištima (oznaka - SV)
-	   - sa ležajima (oznaka - LV)
-	   - za spavanje (oznaka - ZV)
-	   - restoran (oznaka - RV)
-	* Teretni (oznaka - TV ; boja na mapi - (156, 152, 210))
-	* Za posebne namjene (oznaka - XV ; boja na mapi - (163, 163, 11))
+	* Putnički ((136, 69, 69))
+	   - sa sjedištima (SV)
+	   - sa ležajima (LV)
+	   - za spavanje (ZV)
+	   - restoran (RV)
+	* Teretni (TV ; (156, 152, 210))
+	* Za posebne namjene (XV ; (163, 163, 11))
 
 Polje pod naponom je obojeno žutom bojom.
 
 VOZILA : 
+(oznaka ; boja na mapi (r, g, b))
+
 ~ Atributi potrebni za kreiranje vozila se generišu slučajno.
 
- * Automobil (oznaka - A ; boja na mapi - (117, 0, 231))
- * Kamion ( oznaka - K ; boja na mapi - (0, 231, 163))
+ * Automobil (A ; (117, 0, 231))
+ * Kamion (K ; (0, 231, 163)
 
 
 PUTEVI I PRUGE : 
