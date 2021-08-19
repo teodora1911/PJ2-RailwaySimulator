@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -28,6 +27,7 @@ import map.RailwayStationsGraph;
 import railwaystation.RailwayStation;
 import train.Train;
 import util.Constants;
+import util.LoggerUtilClass;
 import wagon.BedWagon;
 import wagon.LoadWagon;
 import wagon.RestaurantWagon;
@@ -38,15 +38,11 @@ import wagon.SpecialWagon;
 public class TrainCreationClass {
     private String path;
 
-    private static Handler handler;
+    private static FileHandler handler;
+    private static Logger logger = Logger.getLogger(TrainCreationClass.class.getName());
 
     static {
-        try {
-            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "train.log", true);
-            Logger.getLogger(TrainCreationClass.class.getName()).addHandler(handler);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        LoggerUtilClass.setLogger(logger, handler, "train.log");
     }
 
     public TrainCreationClass(String path){
@@ -62,7 +58,7 @@ public class TrainCreationClass {
             try{
                 createNewTrain(filename.toPath());
             } catch (Exception ex){
-                Logger.getLogger(TrainCreationClass.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
     }
@@ -112,7 +108,7 @@ public class TrainCreationClass {
             Train newTrain = new Train(id, speed, configuration, stations);
             new Thread(newTrain).start();
         } catch (Exception ex) {
-            Logger.getLogger(TrainCreationClass.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             filename.toFile().delete();
         }
     }

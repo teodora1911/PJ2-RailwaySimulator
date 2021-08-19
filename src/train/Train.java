@@ -1,13 +1,11 @@
 package train;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -22,6 +20,7 @@ import map.Field;
 import map.FieldType;
 import map.Map;
 import railwaystation.RailwayStation;
+import util.LoggerUtilClass;
 import util.serialization.SerializationUtilClass;
 
 public class Train implements Runnable {
@@ -43,15 +42,11 @@ public class Train implements Runnable {
     private Object speedLock = new Object();
     private Object movementLock = new Object();
 
-    protected static Handler handler;
+    protected static FileHandler handler;
+    protected static Logger logger = Logger.getLogger(Train.class.getName());
 
     static {
-        try {
-            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "train.log", true);
-            Logger.getLogger(Train.class.getName()).addHandler(handler);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        LoggerUtilClass.setLogger(logger, handler, "train.log");
     }
 
     public Train(int id, int speed, ArrayList<RailwayElement> configuration, LinkedList<RailwayStation> stations){
@@ -195,7 +190,7 @@ public class Train implements Runnable {
         try{
             Thread.sleep(currentSpeed);
         } catch (InterruptedException ex){
-            Logger.getLogger(Train.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -261,7 +256,7 @@ public class Train implements Runnable {
             historyOfMovement.updateMovementTime(new Date().getTime());
             SerializationUtilClass.serializeMovement(historyOfMovement, "movement" + id);
         } catch (TrainPathNotFoundException ex){
-            Logger.getLogger(Train.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             /**
              * Ako voz ne moze da nadje sljedece koordinate, 
              * uklanjamo ga sa mape.

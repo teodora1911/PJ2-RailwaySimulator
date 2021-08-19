@@ -4,35 +4,31 @@ import static util.Constants.MIN_SPEED;
 import static util.Constants.MODELS;
 import static util.Constants.BRANDS;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import map.Map;
 import util.Constants;
+import util.LoggerUtilClass;
 import vehicle.Car;
 import vehicle.Truck;
 import map.Segment;
 
 public class VehicleCreationThread extends Thread {
 
-    private Random rand = new Random();
-    private static Handler handler;
+    private static Random rand = new Random();
+
+    private static FileHandler handler;
+    private static Logger logger = Logger.getLogger(VehicleCreationThread.class.getName());
 
     public static final int START_YEAR = 1950;
     public static final int YEAR_PERIOD = 70;
 
     static{
-        try {
-            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "vehicle.log", true);
-            Logger.getLogger(VehicleCreationThread.class.getName()).addHandler(handler);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        LoggerUtilClass.setLogger(logger, handler, "vehicle.log");
     }
 
     public VehicleCreationThread(){
@@ -64,7 +60,7 @@ public class VehicleCreationThread extends Thread {
                         try {
                             Thread.sleep(Constants.CREATION_TIME_GAP);
                         } catch (Exception ex) {
-                            Logger.getLogger(VehicleCreationThread.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                            logger.log(Level.SEVERE, ex.getMessage(), ex);
                         }
                     }
                 }

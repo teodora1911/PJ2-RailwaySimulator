@@ -3,7 +3,6 @@ package util.watchers;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -12,11 +11,10 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import engine.Simulation;
+import util.LoggerUtilClass;
 
 public abstract class FileWatcher implements Runnable {
     
@@ -26,15 +24,11 @@ public abstract class FileWatcher implements Runnable {
 
     protected String lastAddedTrainFile = "";
 
-    protected static Handler handler;
+    protected static FileHandler handler;
+    protected static Logger logger = Logger.getLogger(FileWatcher.class.getName());
 
     static {
-        try {
-            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "watcher.log", true);
-            Logger.getLogger(FileWatcher.class.getName()).addHandler(handler);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        LoggerUtilClass.setLogger(logger, handler, "watcher.log");
     }
 
     public FileWatcher(String directory) throws IOException {
@@ -55,7 +49,7 @@ public abstract class FileWatcher implements Runnable {
             try {
                 key = watcher.take();
             } catch (InterruptedException ex) {
-                Logger.getLogger(FileWatcher.class.getName()).log(Level.SEVERE, "Watcher cannot take watch key!", ex);
+                logger.log(Level.SEVERE, "Watcher cannot take watch key!", ex);
                 return;
             }
 
@@ -85,7 +79,7 @@ public abstract class FileWatcher implements Runnable {
         try {
             Thread.sleep(200);
         } catch (InterruptedException ex) {
-            Logger.getLogger(FileWatcher.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 }

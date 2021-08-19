@@ -2,9 +2,7 @@ package vehicle;
 
 import static util.Constants.MIN_SPEED;
 
-import java.io.File;
 import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,6 +13,7 @@ import map.Field;
 import map.FieldType;
 import map.Map;
 import map.Segment;
+import util.LoggerUtilClass;
 
 public abstract class Vehicle extends Element implements Runnable {
     
@@ -24,15 +23,11 @@ public abstract class Vehicle extends Element implements Runnable {
     protected int speed;
     protected Segment road;
 
-    protected static Handler handler;
+    protected static FileHandler handler;
+    protected static Logger logger = Logger.getLogger(Vehicle.class.getName());
 
     static {
-        try{
-            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "vehicle.log", true); // ..., 8096, 1, true
-            Logger.getLogger(Vehicle.class.getName()).addHandler(handler);
-        } catch (Exception ex){
-            ex.printStackTrace();
-        }
+        LoggerUtilClass.setLogger(logger, handler, "vehicle.log");
     }
 
     // za sva vozila pravac je true, jer sadrze odgovarajuce segmente
@@ -121,7 +116,7 @@ public abstract class Vehicle extends Element implements Runnable {
             try {
                 Thread.sleep(speed);
             } catch (InterruptedException ex) {
-                Logger.getLogger(Vehicle.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
 

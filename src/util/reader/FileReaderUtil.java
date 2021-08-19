@@ -8,17 +8,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import engine.Simulation;
 import exceptions.InvalidFileInformationException;
 import map.Map;
 import train.Movement;
 import util.Constants;
+import util.LoggerUtilClass;
 import util.serialization.SerializationUtilClass;
 
 public class FileReaderUtil {
@@ -28,16 +27,13 @@ public class FileReaderUtil {
     private static String trainDirectoryPath = null;
     private static String movementDirectoryPath = null;
 
-    private static Handler handler;
+    private static FileHandler handler;
+    private static Logger logger = Logger.getLogger(FileReaderUtil.class.getName());
+
     private static ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     static{
-        try {
-            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "reader.log", true);
-            Logger.getLogger(FileReaderUtil.class.getName()).addHandler(handler);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        LoggerUtilClass.setLogger(logger, handler, "reader.log");
         readFoldersPaths();
         SerializationUtilClass.setPath(movementDirectoryPath);
         SerializationUtilClass.setLock(lock);
@@ -91,11 +87,11 @@ public class FileReaderUtil {
                     Map.getRoad(roadIndex).setNumberOfVehicles(roadNumberOfVehicles);
 
                 } catch (Exception ex){
-                    Logger.getLogger(FileReaderUtil.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
+                    logger.log(Level.WARNING, ex.getMessage(), ex);
                 }
             }
         } catch (Exception ex){
-            Logger.getLogger(FileReaderUtil.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -124,7 +120,7 @@ public class FileReaderUtil {
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(FileReaderUtil.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -138,12 +134,12 @@ public class FileReaderUtil {
                 return directoryPath;
             }
         } catch (Exception ex){
-            Logger.getLogger(FileReaderUtil.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return null;
     }
 
-    // CITANJE SERJIALIZOVANIH KRETANJA
+    // CITANJE SERIJALIZOVANIH KRETANJA
     public HashMap<String, String> readMovementsDirectory(){
         lock.readLock().lock();
         File directory = new File(movementDirectoryPath);
