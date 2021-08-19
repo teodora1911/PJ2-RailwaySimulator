@@ -28,7 +28,7 @@ public class VehicleCreationThread extends Thread {
 
     static{
         try {
-            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "vehicle.log");
+            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "vehicle.log", true);
             Logger.getLogger(VehicleCreationThread.class.getName()).addHandler(handler);
         } catch (Exception ex) {
             ex.printStackTrace();

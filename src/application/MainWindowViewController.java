@@ -106,7 +106,6 @@ public class MainWindowViewController {
         ButtonBar.setButtonData(cancelButton, ButtonData.LEFT);
         ButtonBar.setButtonData(movementButton, ButtonData.RIGHT);
         buttonBar.getButtons().addAll(startButton, cancelButton, movementButton);
-        System.out.println("... button pane done ...");
     }
 
     private void setGridPane(){
@@ -142,7 +141,6 @@ public class MainWindowViewController {
 
        updateMap();
        gridMap.setGridLinesVisible(true);
-       System.out.println("... grid pane done ...");
     }
 
     private void setBorderPane(){
@@ -151,7 +149,6 @@ public class MainWindowViewController {
         BorderPane.setAlignment(buttonBar, Pos.BOTTOM_CENTER);
         pane.setCenter(gridMap);
         pane.setBottom(buttonBar);
-        System.out.println("... border pane done ...");
     }
 
     public void show(){
@@ -166,7 +163,6 @@ public class MainWindowViewController {
        Platform.runLater(new Runnable(){
            @Override
            public void run(){
-            //System.out.println("... izmjena mape ...");
             updateMap();
            }
        });

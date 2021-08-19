@@ -42,7 +42,7 @@ public class TrainCreationClass {
 
     static {
         try {
-            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "train.log");
+            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "train.log", true);
             Logger.getLogger(TrainCreationClass.class.getName()).addHandler(handler);
         } catch (Exception ex) {
             ex.printStackTrace();

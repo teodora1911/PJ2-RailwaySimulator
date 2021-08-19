@@ -25,7 +25,7 @@ public final class SerializationUtilClass {
 
     static {
         try {
-            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "serialization.log");
+            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "serialization.log", true);
             Logger.getLogger(SerializationUtilClass.class.getName()).addHandler(handler);
         } catch (Exception ex) {
             ex.printStackTrace();

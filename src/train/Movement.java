@@ -10,6 +10,7 @@ import map.Coordinates;
 import railwaystation.RailwayStation;
 
 public class Movement implements Serializable {
+    private static final long serialVersionUID = 1L;
     private ArrayList<Coordinates> path = new ArrayList<>();
     private long movementTime;
     private HashMap<String, Long> stationsRetentionTime = new HashMap<>();

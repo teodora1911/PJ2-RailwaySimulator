@@ -33,7 +33,7 @@ public class FileReaderUtil {
 
     static{
         try {
-            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "reader.log");
+            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "reader.log", true);
             Logger.getLogger(FileReaderUtil.class.getName()).addHandler(handler);
         } catch (Exception ex) {
             ex.printStackTrace();

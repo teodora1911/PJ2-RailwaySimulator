@@ -30,7 +30,7 @@ public abstract class FileWatcher implements Runnable {
 
     static {
         try {
-            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "watcher.log");
+            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "watcher.log", true);
             Logger.getLogger(FileWatcher.class.getName()).addHandler(handler);
         } catch (Exception ex) {
             ex.printStackTrace();

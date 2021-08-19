@@ -23,8 +23,16 @@ public class Simulation {
     private static Handler handler;
 
     static {
+        try{
+            File loggerDirectory = new File(loggerDirectoryPath);
+            if(!loggerDirectory.exists()){
+                loggerDirectory.mkdir();
+            }
+        } catch (Exception ex){
+            System.out.println("Logger direktorijum se ne moze da kreira.");
+        }
         try {
-            handler = new FileHandler(loggerDirectoryPath + File.separator + "simulation.log");
+            handler = new FileHandler(loggerDirectoryPath + File.separator + "simulation.log", true);
             Logger.getLogger(Simulation.class.getName()).addHandler(handler);
         } catch (Exception e) {
             e.printStackTrace();

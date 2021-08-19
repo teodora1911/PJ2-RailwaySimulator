@@ -28,7 +28,7 @@ public abstract class Vehicle extends Element implements Runnable {
 
     static {
         try{
-            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "vehicle.log"); // ..., 8096, 1, true
+            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "vehicle.log", true); // ..., 8096, 1, true
             Logger.getLogger(Vehicle.class.getName()).addHandler(handler);
         } catch (Exception ex){
             ex.printStackTrace();

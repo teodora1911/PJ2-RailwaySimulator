@@ -47,7 +47,7 @@ public class Train implements Runnable {
 
     static {
         try {
-            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "train.log");
+            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + "train.log", true);
             Logger.getLogger(Train.class.getName()).addHandler(handler);
         } catch (Exception ex) {
             ex.printStackTrace();
