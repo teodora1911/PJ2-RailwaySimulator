@@ -61,8 +61,8 @@ public class Coordinates implements Serializable {
 		int prime = 31;
         int result = 1;
 
-        result = prime * result + (int)(x ^ (x >>> 32));
-        result = prime * result + (int)(y ^ (y >>> 32));
+        result = prime * result + (int)(x ^ (x >>> Integer.MAX_VALUE));
+        result = prime * result + (int)(y ^ (y >>> Integer.MAX_VALUE));
 
         return result;
 	}
