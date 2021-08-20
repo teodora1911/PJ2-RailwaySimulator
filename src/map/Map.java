@@ -44,6 +44,7 @@ public final class Map {
         C.start();
         D.start();
         E.start();
+        // stations.forEach(s -> s.start());
     }
 
     private Map(){ }

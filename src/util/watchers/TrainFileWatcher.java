@@ -15,7 +15,7 @@ public class TrainFileWatcher extends FileWatcher {
     public void modifyAction(Path filename) {
         /*
          * Ne implementiramo ovu metodu 
-         * jer pratimo samo kreiranje novih fajlova u folderu vozovi
+         * jer pratimo samo kreiranje novih fajlova u folderu
          */
     }
 

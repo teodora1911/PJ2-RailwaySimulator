@@ -23,7 +23,7 @@ public class ConfigurationFileWatcher extends FileWatcher {
     public void creationAction(Path filename) {
         /*
          * Ne implementiramo ovu metodu 
-         * jer pratimo samo modifikaciju konfigurationog fajla
+         * jer pratimo samo modifikaciju konfiguracionog fajla
          * 
          */
     }

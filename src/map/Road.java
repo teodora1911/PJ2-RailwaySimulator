@@ -48,7 +48,7 @@ public class Road {
                 currentNumberOfVehicles = numberOfVehicles;
             }
         } else {
-            // Ignorisanje manjeg/jednakog broja novih vozila
+            // ignore less or equal number of vehicles on the road
         }
     }
 

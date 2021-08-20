@@ -74,7 +74,7 @@ public final class Constants {
     }
 
     
-    // GUI part
+    // GUI
     public static final int MIN_SIZE_LABEL = 10;
     public static final int PREF_SIZE_LABEL = 30;
 
