@@ -12,8 +12,6 @@ import util.watchers.ConfigurationFileWatcher;
 import util.watchers.TrainFileWatcher;
 
 public class Simulation {
-
-    public static final String loggerDirectoryPath = "D:\\JAVA\\PROJEKTNI ZADATAK\\ProjektniZadatak2021\\ProjektniZadatak\\loggeri";
     
     public static MainWindowViewController mwvc;
     public static FileReaderUtil fileReader;

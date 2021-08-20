@@ -5,13 +5,13 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import engine.Simulation;
-
 public final class LoggerUtilClass {
+
+    public static final String LOGGER_DIRECTORY = "D:\\JAVA\\PROJEKTNI ZADATAK\\ProjektniZadatak2021\\ProjektniZadatak\\loggeri";
 
     static {
         try{
-            File loggerDirectory = new File(Simulation.loggerDirectoryPath);
+            File loggerDirectory = new File(LOGGER_DIRECTORY);
             if(!loggerDirectory.exists()){
                 loggerDirectory.mkdir();
             }
@@ -24,7 +24,7 @@ public final class LoggerUtilClass {
 
     public static void setLogger(Logger logger, FileHandler handler, String loggerFilename){
         try{
-            handler = new FileHandler(Simulation.loggerDirectoryPath + File.separator + loggerFilename, true);
+            handler = new FileHandler(LOGGER_DIRECTORY + File.separator + loggerFilename, true);
             handler.setFormatter(new SimpleFormatter());
             logger.setUseParentHandlers(false);
             logger.addHandler(handler);
