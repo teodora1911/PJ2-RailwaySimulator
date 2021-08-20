@@ -231,7 +231,7 @@ public class TrainCreationClass {
                         break;
 
                     case LOAD:
-                        configuration.add(new LoadWagon(x, y, rand.nextInt(50) + 25, rand.nextDouble()));
+                        configuration.add(new LoadWagon(x, y, rand.nextInt(50) + 25, rand.nextDouble() * 10000.0));
                         break;
 
                     case SPECIAL:
