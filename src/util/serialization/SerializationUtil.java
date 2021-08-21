@@ -11,32 +11,32 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import train.Movement;
-import util.LoggerUtilClass;
+import util.LoggerUtil;
 
-public final class SerializationUtilClass {
+public final class SerializationUtil {
     
     private static String path;
     public static final String EXTENSION = ".ser";
     private static ReentrantReadWriteLock lock;
 
     private static FileHandler handler;
-    private static Logger logger = Logger.getLogger(SerializationUtilClass.class.getName());
+    private static Logger logger = Logger.getLogger(SerializationUtil.class.getName());
 
     static {
-        LoggerUtilClass.setLogger(logger, handler, "serialization.log");
+        LoggerUtil.setLogger(logger, handler, "serialization.log");
     }
     
 
-    private SerializationUtilClass(){
+    private SerializationUtil(){
         super();
     }
 
     public static void setLock(ReentrantReadWriteLock lock){
-        SerializationUtilClass.lock = lock;
+        SerializationUtil.lock = lock;
     }
 
     public static void setPath(String path){
-        SerializationUtilClass.path = path;
+        SerializationUtil.path = path;
     }
 
     public static String getPath(){

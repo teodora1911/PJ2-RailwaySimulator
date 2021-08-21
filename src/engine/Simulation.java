@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import application.MainWindowViewController;
-import util.LoggerUtilClass;
+import util.LoggerUtil;
 import util.reader.FileReaderUtil;
 import util.watchers.ConfigurationFileWatcher;
 import util.watchers.TrainFileWatcher;
@@ -21,7 +21,7 @@ public class Simulation {
     private static Logger logger = Logger.getLogger(Simulation.class.getName());
 
     static {
-        LoggerUtilClass.setLogger(logger, handler, "simulation.log");
+        LoggerUtil.setLogger(logger, handler, "simulation.log");
     }
 
     public static void setMainWindowViewController(MainWindowViewController mwvc){

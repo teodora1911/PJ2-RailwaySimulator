@@ -17,8 +17,8 @@ import exceptions.InvalidFileInformationException;
 import map.Map;
 import train.Movement;
 import util.Constants;
-import util.LoggerUtilClass;
-import util.serialization.SerializationUtilClass;
+import util.LoggerUtil;
+import util.serialization.SerializationUtil;
 
 public class FileReaderUtil {
     
@@ -33,10 +33,10 @@ public class FileReaderUtil {
     private static ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     static{
-        LoggerUtilClass.setLogger(logger, handler, "reader.log");
+        LoggerUtil.setLogger(logger, handler, "reader.log");
         readFoldersPaths();
-        SerializationUtilClass.setPath(movementDirectoryPath);
-        SerializationUtilClass.setLock(lock);
+        SerializationUtil.setPath(movementDirectoryPath);
+        SerializationUtil.setLock(lock);
     }
     
 
@@ -143,12 +143,12 @@ public class FileReaderUtil {
     public HashMap<String, String> readMovementsDirectory(){
         lock.readLock().lock();
         File directory = new File(movementDirectoryPath);
-        String[] serializedFiles = directory.list((dir, name) -> name.toLowerCase().endsWith(SerializationUtilClass.EXTENSION));
+        String[] serializedFiles = directory.list((dir, name) -> name.toLowerCase().endsWith(SerializationUtil.EXTENSION));
         HashMap<String, String> movements = null;
         if(serializedFiles.length > 0){
             movements = new HashMap<>();
             for(String file : serializedFiles){
-                Movement m = SerializationUtilClass.deserializeMovement(file);
+                Movement m = SerializationUtil.deserializeMovement(file);
                 if(m != null){
                     movements.put(file, m.toString());
                 }

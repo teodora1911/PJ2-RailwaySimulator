@@ -5,37 +5,24 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import railwaystation.RailwayStation;
+
 public class RailwayStationsGraph {
-    public final static HashMap<String, LinkedList<String>> graph = new HashMap<>();
+    private static HashMap<String, LinkedList<String>> graph = new HashMap<>();
 
-    static {
-        LinkedList<String> neighboursA = new LinkedList<>();
-        neighboursA.offer("B");
-        graph.put("A", neighboursA);
+    public RailwayStationsGraph() { }
 
-        LinkedList<String> neighboursB = new LinkedList<>();
-		neighboursB.offer("A");
-		neighboursB.offer("C");
-		graph.put("B", neighboursB);
-		
-		LinkedList<String> neighboursC = new LinkedList<>();
-		neighboursC.offer("B");
-		neighboursC.offer("D");
-		neighboursC.offer("E");
-		graph.put("C", neighboursC);
-		
-		LinkedList<String> neighboursD = new LinkedList<>();
-		neighboursD.offer("C");
-		graph.put("D", neighboursD);
-		
-		LinkedList<String> neighboursE = new LinkedList<>();
-		neighboursE.offer("C");
-		graph.put("E", neighboursE);
+    public void addStation(RailwayStation station, RailwayStation... neighbours){
+        if(!graph.containsKey(station.getName())){
+            LinkedList<String> listOfNeighbours = new LinkedList<>();
+            for(RailwayStation neighbour : neighbours){
+                listOfNeighbours.offer(neighbour.getName());
+            }
+            graph.put(station.getName(), listOfNeighbours);
+        }
     }
 
-    private RailwayStationsGraph() { }
-
-    private static void travelGraph(String src, String dest, HashMap<String, String> pred){
+    private void travelGraph(String src, String dest, HashMap<String, String> pred){
         LinkedList<String> queue = new LinkedList<>();
         ArrayList<String> visited = new ArrayList<>();
 
@@ -60,7 +47,7 @@ public class RailwayStationsGraph {
         }
     }
 
-    public static ArrayList<String> findRoute(String src, String dest){
+    public ArrayList<String> findRoute(String src, String dest){
 
         if(src.equals(dest)){
             return null;

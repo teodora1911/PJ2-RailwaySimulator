@@ -23,11 +23,10 @@ import locomotive.ShuntingLocomotive;
 import locomotive.UniversalLocomotive;
 import map.Coordinates;
 import map.Map;
-import map.RailwayStationsGraph;
 import railwaystation.RailwayStation;
 import train.Train;
 import util.Constants;
-import util.LoggerUtilClass;
+import util.LoggerUtil;
 import wagon.BedWagon;
 import wagon.LoadWagon;
 import wagon.RestaurantWagon;
@@ -42,7 +41,7 @@ public class TrainCreationClass {
     private static Logger logger = Logger.getLogger(TrainCreationClass.class.getName());
 
     static {
-        LoggerUtilClass.setLogger(logger, handler, "train.log");
+        LoggerUtil.setLogger(logger, handler, "train.log");
     }
 
     public TrainCreationClass(String path){
@@ -88,7 +87,7 @@ public class TrainCreationClass {
                 throw new InvalidFileInformationException("Imena stanica nisu odgovarajuca.");
             }
 
-            ArrayList<String> stationsRoute = RailwayStationsGraph.findRoute(src, dest);
+            ArrayList<String> stationsRoute = Map.railwayStationMap.findRoute(src, dest);
             LinkedList<RailwayStation> stations = new LinkedList<>();
             for(String s : stationsRoute){
                 RailwayStation station = Map.getStation(s);

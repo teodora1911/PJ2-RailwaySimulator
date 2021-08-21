@@ -14,7 +14,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import util.LoggerUtilClass;
+import util.LoggerUtil;
 
 public abstract class FileWatcher implements Runnable {
     
@@ -28,7 +28,7 @@ public abstract class FileWatcher implements Runnable {
     protected static Logger logger = Logger.getLogger(FileWatcher.class.getName());
 
     static {
-        LoggerUtilClass.setLogger(logger, handler, "watcher.log");
+        LoggerUtil.setLogger(logger, handler, "watcher.log");
     }
 
     public FileWatcher(String directory) throws IOException {

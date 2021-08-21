@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 import map.Map;
 import util.Constants;
-import util.LoggerUtilClass;
+import util.LoggerUtil;
 import vehicle.Car;
 import vehicle.Truck;
 import map.Segment;
@@ -28,7 +28,7 @@ public class VehicleCreationThread extends Thread {
     public static final int YEAR_PERIOD = 70;
 
     static{
-        LoggerUtilClass.setLogger(logger, handler, "vehicle.log");
+        LoggerUtil.setLogger(logger, handler, "vehicle.log");
     }
 
     public VehicleCreationThread(){

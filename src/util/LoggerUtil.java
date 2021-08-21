@@ -5,7 +5,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-public final class LoggerUtilClass {
+public final class LoggerUtil {
 
     public static final String LOGGER_DIRECTORY = "D:\\JAVA\\PROJEKTNI ZADATAK\\ProjektniZadatak2021\\ProjektniZadatak\\loggeri";
 
@@ -20,7 +20,7 @@ public final class LoggerUtilClass {
         }
     }
     
-    private LoggerUtilClass() { }
+    private LoggerUtil() { }
 
     public static void setLogger(Logger logger, FileHandler handler, String loggerFilename){
         try{

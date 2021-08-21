@@ -13,7 +13,7 @@ import map.Field;
 import map.FieldType;
 import map.Map;
 import map.Segment;
-import util.LoggerUtilClass;
+import util.LoggerUtil;
 
 public abstract class Vehicle extends Element implements Runnable {
     
@@ -27,7 +27,7 @@ public abstract class Vehicle extends Element implements Runnable {
     protected static Logger logger = Logger.getLogger(Vehicle.class.getName());
 
     static {
-        LoggerUtilClass.setLogger(logger, handler, "vehicle.log");
+        LoggerUtil.setLogger(logger, handler, "vehicle.log");
     }
 
     // za sva vozila pravac je true, jer sadrze odgovarajuce segmente

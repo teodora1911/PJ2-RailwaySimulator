@@ -20,8 +20,8 @@ import map.Field;
 import map.FieldType;
 import map.Map;
 import railwaystation.RailwayStation;
-import util.LoggerUtilClass;
-import util.serialization.SerializationUtilClass;
+import util.LoggerUtil;
+import util.serialization.SerializationUtil;
 
 public class Train implements Runnable {
     
@@ -46,7 +46,7 @@ public class Train implements Runnable {
     protected static Logger logger = Logger.getLogger(Train.class.getName());
 
     static {
-        LoggerUtilClass.setLogger(logger, handler, "train.log");
+        LoggerUtil.setLogger(logger, handler, "train.log");
     }
 
     public Train(int id, int speed, ArrayList<RailwayElement> configuration, LinkedList<RailwayStation> stations){
@@ -254,7 +254,7 @@ public class Train implements Runnable {
             }
 
             historyOfMovement.updateMovementTime(new Date().getTime());
-            SerializationUtilClass.serializeMovement(historyOfMovement, "movement" + id);
+            SerializationUtil.serializeMovement(historyOfMovement, "movement" + id);
         } catch (TrainPathNotFoundException ex){
             logger.log(Level.SEVERE, ex.getMessage(), ex);
             /**

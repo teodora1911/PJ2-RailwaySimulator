@@ -18,6 +18,8 @@ public final class Map {
     public static RailwayStation D = new RailwayStation("D");
     public static RailwayStation E = new RailwayStation("E");
 
+    public static RailwayStationsGraph railwayStationMap = new RailwayStationsGraph();
+
     private static Road road1 = new Road(1);
     private static Road road2 = new Road(2);
     private static Road road3 = new Road(3);
@@ -38,6 +40,7 @@ public final class Map {
         initializeRoads();
         initializeRailways();
         initializeStations();
+        initializeStationsGraph();
 
         A.start();
         B.start();
@@ -374,6 +377,14 @@ public final class Map {
         D.addRailway(railwayCD);
 
         E.addRailway(railwayCE);
+    }
+
+    private static void initializeStationsGraph() {
+        railwayStationMap.addStation(A, B);
+        railwayStationMap.addStation(B, A, C);
+        railwayStationMap.addStation(C, B, D, E);
+        railwayStationMap.addStation(D, C);
+        railwayStationMap.addStation(E, C);
     }
 
     public static boolean isFieldEmpty(Coordinates coordinates){
