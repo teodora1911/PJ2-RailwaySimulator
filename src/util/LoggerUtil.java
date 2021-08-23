@@ -29,7 +29,7 @@ public final class LoggerUtil {
             logger.setUseParentHandlers(false);
             logger.addHandler(handler);
         } catch(Exception ex){
-            ex.printStackTrace();
+            System.out.println("Problem pri kreiranju log fajla.");
         }
     }
 }
