@@ -27,7 +27,10 @@ public class HistoryOfMovementViewController {
      }
 
     private void setTableView(){
-        HashMap<String, String> map = Simulation.fileReader.readMovementsDirectory();
+        HashMap<String, String> map = null;
+        if(Simulation.fileReader != null){
+            map = Simulation.fileReader.readMovementsDirectory();
+        }
 
         TableColumn<Map.Entry<String, String>, String> column1 = new TableColumn<>("Ime fajla");
         column1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>(){
