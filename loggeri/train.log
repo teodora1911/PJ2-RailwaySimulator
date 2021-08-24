@@ -1,0 +1,32 @@
+avg 24, 2021 12:08:26 PO PODNE engine.TrainCreationClass createNewTrain
+SEVERE: Brzina treba da bude veca od 0.5 s.
+exceptions.InvalidFileInformationException: Brzina treba da bude veca od 0.5 s.
+	at engine.TrainCreationClass.createNewTrain(TrainCreationClass.java:77)
+	at util.watchers.TrainFileWatcher.creationAction(TrainFileWatcher.java:28)
+	at util.watchers.FileWatcher.run(FileWatcher.java:66)
+	at java.base/java.lang.Thread.run(Thread.java:832)
+
+avg 24, 2021 12:08:39 PO PODNE engine.TrainCreationClass createNewTrain
+SEVERE: Lokomotive i vagoni nisu odgovarajuce slozeni i/ili rasporedjeni.
+exceptions.InvalidFileInformationException: Lokomotive i vagoni nisu odgovarajuce slozeni i/ili rasporedjeni.
+	at engine.TrainCreationClass.createNewTrain(TrainCreationClass.java:81)
+	at util.watchers.TrainFileWatcher.creationAction(TrainFileWatcher.java:28)
+	at util.watchers.FileWatcher.run(FileWatcher.java:66)
+	at java.base/java.lang.Thread.run(Thread.java:832)
+
+avg 24, 2021 12:08:50 PO PODNE engine.TrainCreationClass createNewTrain
+SEVERE: Imena stanica nisu odgovarajuca.
+exceptions.InvalidFileInformationException: Imena stanica nisu odgovarajuca.
+	at engine.TrainCreationClass.createNewTrain(TrainCreationClass.java:87)
+	at util.watchers.TrainFileWatcher.creationAction(TrainFileWatcher.java:28)
+	at util.watchers.FileWatcher.run(FileWatcher.java:66)
+	at java.base/java.lang.Thread.run(Thread.java:832)
+
+avg 24, 2021 12:09:01 PO PODNE engine.TrainCreationClass createNewTrain
+SEVERE: Lokomotive i vagoni nisu odgovarajuce slozeni i/ili rasporedjeni.
+exceptions.InvalidFileInformationException: Lokomotive i vagoni nisu odgovarajuce slozeni i/ili rasporedjeni.
+	at engine.TrainCreationClass.createNewTrain(TrainCreationClass.java:81)
+	at util.watchers.TrainFileWatcher.creationAction(TrainFileWatcher.java:28)
+	at util.watchers.FileWatcher.run(FileWatcher.java:66)
+	at java.base/java.lang.Thread.run(Thread.java:832)
+
